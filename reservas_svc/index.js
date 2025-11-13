@@ -9,21 +9,39 @@ function loadReservas() {
   return JSON.parse(data);
 } 
 
+function saveReservas(consultas) {
+  fs.writeFileSync(filePath, JSON.stringify(consultas, null, 2));
+}
+
 app.get('/reservas/', (req, res) => {
-  res.json(users);
+  const reservas = loadReservas();
+  res.json(reservas);
 });
 
 
 app.get('/reservas/:id', (req, res) => {
+  const reservas = loadReservas();
+  const reserva = reservas.find(c => c.id === Number(req.params.id));
+  if (!) return res.status(404).json({ erro: 'Não encontrada' });
+  res.json();
   res.json(users);
 });
 
-app.post('/reservas', (req, res) =>{
-    res.json();
-});
-
-app.put('/reservas', (req, res) =>{
-    res.json();
+app.post('/reservas', async (req, res) =>{
+  const { pacienteId, medico, data } = req.body;
+    try {
+      const resposta = await axios.get(`http://localhost:3001/pacientes/${pacienteId}`);
+      const paciente = resposta.data;
+  
+      const reservas = loadReservas();
+      const nova = { id , paciente, medico, data, created_at : Date.now()};
+      reservas.push(nova);
+      saveReservas(reservas);
+  
+      res.status(201).json(nova);
+    } catch {
+      res.status(400).json({ erro: 'Paciente inválido' });
+    }
 });
 
 
@@ -33,7 +51,7 @@ app.put('/reservas/:id', (req, res) => {
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   consultas[index] = { id: Number(req.params.id), ...req.body };
-  saveConsultas(consultas);
+  saveReservas(consultas);
 
   res.json(consultas[index]);
 });
@@ -44,7 +62,7 @@ app.patch('/reservas/:id', (req, res) => {
   if (!consulta) return res.status(404).json({ erro: 'Não encontrada' });
 
   Object.assign(consulta, req.body);
-  saveConsultas(consultas);
+  saveReservas(consultas);
 
   res.json(consulta);
 });
@@ -55,14 +73,14 @@ app.delete('/reservas/:id', (req, res) => {
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   consultas.splice(index, 1);
-  saveConsultas(consultas);
+  saveReservas(consultas);
 
   res.status(204).send();
 });
 
 
 app.head('/reservas/:id', (req, res) => {
-  const consultas = loadConsultas();
+  const consultas = loadReservas();
   const exists = consultas.some(c => c.id === Number(req.params.id));
   res.sendStatus(exists ? 200 : 404);
 });
