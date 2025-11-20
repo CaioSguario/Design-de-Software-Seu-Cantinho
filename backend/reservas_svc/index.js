@@ -10,38 +10,38 @@ const PORT = 3000;
 app.use(express.json());
 const filePath = path.join(__dirname, 'db', 'reservas.json');
 
-function loadReservas() {
+function load_reservas() {
   const data = fs.readFileSync(filePath);
   return JSON.parse(data);
 } 
 
-function saveReservas(consultas) {
+function save_reservas(consultas) {
   fs.writeFileSync(filePath, JSON.stringify(consultas, null, 2));
 }
 
 app.get('/reservas/', (req, res) => {
-  const reservas = loadReservas();
+  const reservas = load_reservas();
   res.json(reservas);
 });
 
 
 app.get('/reservas/:id', (req, res) => {
-  const reservas = loadReservas();
+  const reservas = load_reservas();
   const reserva = reservas.find(c => c.id === Number(req.params.id));
   if (!reserva) return res.status(404).json({ erro: 'Não encontrada' });
-  res.json(users);
+  res.json(reserva);
 });
 
 app.post('/reservas', async (req, res) =>{
-  const { espacoId, medico, data } = req.body;
+  const { espaco_id, medico, data } = req.body;
     try {
-      const resposta = await axios.get(`http://localhost:3001/espacos/${espacoId}`);
+      const resposta = await axios.get(`http://localhost:3001/espacos/${espaco_id}`);
       const espaco = resposta.data;
   
-      const reservas = loadReservas();
-      const nova = { id , espaco, medico, data, created_at : Date.now()};
+      const reservas = load_reservas();
+      const nova = { id : get_next_id(db_path), espaco_id, medico, data, created_at : Date.now()};
       reservas.push(nova);
-      saveReservas(reservas);
+      save_reservas(reservas);
   
       res.status(201).json(nova);
     } catch {
@@ -51,41 +51,41 @@ app.post('/reservas', async (req, res) =>{
 
 
 app.put('/reservas/:id', (req, res) => {
-  const reservas = loadReservas();
+  const reservas = load_reservas();
   const index = reservas.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   reservas[index] = { id: Number(req.params.id), ...req.body };
-  saveReservas(reservas);
+  save_reservas(reservas);
 
   res.json(reservas[index]);
 });
 
 app.patch('/reservas/:id', (req, res) => {
-  const reservas = loadReservas();
+  const reservas = load_reservas();
   const reserva = reservas.find(c => c.id === Number(req.params.id));
   if (!reserva) return res.status(404).json({ erro: 'Não encontrada' });
 
   Object.assign(reserva, req.body);
-  saveReservas(reservas);
+  save_reservas(reservas);
 
   res.json(reserva);
 });
 
 app.delete('/reservas/:id', (req, res) => {
-  let reservas = loadReservas();
+  let reservas = load_reservas();
   const index = reservas.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   reservas.splice(index, 1);
-  saveReservas(reservas);
+  save_reservas(reservas);
 
   res.status(204).send();
 });
 
 
 app.head('/reservas/:id', (req, res) => {
-  const reservas = loadReservas();
+  const reservas = load_reservas();
   const exists = reservas.some(c => c.id === Number(req.params.id));
   res.sendStatus(exists ? 200 : 404);
 });
@@ -101,3 +101,6 @@ app.listen(PORT, () => {
   console.log(`reservas_svc rodando em http://localhost:${PORT}`);
 });
 
+module.exports = {
+  load_reservas
+};

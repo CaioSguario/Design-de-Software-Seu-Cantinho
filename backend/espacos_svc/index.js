@@ -9,36 +9,36 @@ const PORT = 3001;
 app.use(express.json());
 const filePath = path.join(__dirname, 'db', 'espacos.json');
 
-function loadEspacos() {
+function load_espacos() {
   const data = fs.readFileSync(filePath);
   return JSON.parse(data);
 } 
 
-function saveEspacos(espaco) {
+function save_espacos(espaco) {
   fs.writeFileSync(filePath, JSON.stringify(espaco, null, 2));
 }
 
 app.get('/espacos/', (req, res) => {
-  const reservas = loadEspacos();
-  res.json(reservas);
+  const espacos = load_espacos();
+  res.json(espacos);
 });
 
 
 app.get('/espacos/:id', (req, res) => {
-  const espacos = loadEspacos();
+  const espacos = load_espacos();
   const espaco = espacos.find(c => c.id === Number(req.params.id));
-  if (!espaco) return res.status(404).json({ erro: 'Não encontrada' });
+  if (!espaco) return res.status(404).json({ erro: 'Não encontrado' });
   res.json();
-  res.json(users);
+  res.json(espaco);
 });
 
 app.post('/espacos', async (req, res) =>{
   const { nome, descricao, capacidade, preco_por_hora, ativo } = req.body;
     try {
-      espacos = loadEspacos();
-      const novo = {id, nome, descricao, capacidade, preco_por_hora, ativo};
+      const espacos = load_espacos();
+      const novo = {id : get_next_id(db_path), nome, descricao, capacidade, preco_por_hora, ativo};
       espacos.push(novo);
-      saveEspacos(espacos);
+      save_espacos(espacos);
   
       res.status(201).json(novo);
     } catch {
@@ -48,41 +48,41 @@ app.post('/espacos', async (req, res) =>{
 
 
 app.put('/espacos/:id', (req, res) => {
-  const espacos = loadEspacos();
+  const espacos = load_espacos();
   const index = espacos.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   espacos[index] = { id: Number(req.params.id), ...req.body };
-  saveEspacos(espacos);
+  save_espacos(espacos);
 
   res.json(espacos[index]);
 });
 
 app.patch('/espacos/:id', (req, res) => {
-  const espacos = loadEspacos();
+  const espacos = load_espacos();
   const espaco = espacos.find(c => c.id === Number(req.params.id));
   if (!espaco) return res.status(404).json({ erro: 'Não encontrada' });
 
   Object.assign(espaco, req.body);
-  saveEspacos(espacos);
+  save_espacos(espacos);
 
   res.json(espaco);
 });
 
 app.delete('/espacos/:id', (req, res) => {
-  let espacos = loadEspacos();
+  const espacos = load_espacos();
   const index = espacos.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   espacos.splice(index, 1);
-  saveEspacos(espacos);
+  save_espacos(espacos);
 
   res.status(204).send();
 });
 
 
 app.head('/espacos/:id', (req, res) => {
-  const espacos = loadEspacos();
+  const espacos = load_espacos();
   const exists = espacos.some(c => c.id === Number(req.params.id));
   res.sendStatus(exists ? 200 : 404);
 });
