@@ -380,6 +380,129 @@ paths:
         '404':
           description: Usuário não encontrada
 
+  /pagamentos:
+    get:
+      summary: Lista todos os pagamentos
+      responses:
+        '200':
+          description: Lista de pagamentos
+    post:
+      summary: Cria um novo pagamentos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pagamento'
+      responses:
+        '201':
+          description: Pagamento criado com sucesso
+    options:
+      summary: Lista métodos permitidos
+      responses:
+        '200':
+          description: Métodos permitidos
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
+
+  /pagamentos/{id}:
+    get:
+      summary: Retorna um pagamento pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pagamento encontrado
+        '404':
+          description: Pagamento não encontrado
+
+    put:
+      summary: Substitui um pagamento existente
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pagamento'
+      responses:
+        '200':
+          description: Pagamento atualizado
+        '404':
+          description: Pagamento não encontrado
+
+    patch:
+      summary: Atualiza parcialmente um pagamento
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                cpf_cnpj:
+                  type: string
+                email:
+                  type: string
+                telefone:
+                  type: string
+                endereco:
+                  type: string
+                cargo:
+                  type: string  
+      responses:
+        '200':
+          description: Pagamento atualizado parcialmente
+        '404':
+          description: Pagamento não encontrado
+
+    delete:
+      summary: Remove um pagamento
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Pagamento removido com sucesso
+        '404':
+          description: Pagamento não encontrado
+
+    head:
+      summary: Verifica existência do usuário (sem corpo)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuário existe
+        '404':
+          description: Usuário não encontrada
 
 
 components:
@@ -472,3 +595,26 @@ components:
           type: string
         cargo:
           type: string  
+
+    pagamento:
+      type: object
+      required:
+        - id
+        - reserva_id
+        - quantia
+        - pago_em
+        - metodo
+      properties:
+        id:
+          type: integer
+          example: 1
+        reserva_id:
+          type: integer
+        quantia:
+          type: number
+        pago_em:
+          type: string
+          format: date-time
+          example: 2025-09-25T14:00:00
+        metodo:
+          type: string
