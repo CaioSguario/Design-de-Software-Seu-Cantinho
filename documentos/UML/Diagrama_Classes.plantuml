@@ -1,0 +1,108 @@
+@startuml
+package "Dominio" {
+  class Branch {
+    +id: UUID
+    +nome: String
+    +address: String
+    +city: String
+    +state: String
+    +phone: String
+  }
+
+  class Space {
+    +id: UUID
+    +branchId: UUID
+    +name: String
+    +description: String
+    +capacity: int
+    +price_per_hour: Decimal
+    +active: boolean
+  }
+
+  class Photo {
+    +id: UUID
+    +spaceId: UUID
+    +url: String
+    +alt: String
+  }
+
+  class User {
+    +id: UUID
+    +name: String
+    +cpf_cnpj: String
+    +email: String
+    +phone: String
+    +address: String
+    +role: Role
+  }
+
+  class Reservation {
+    +id: UUID
+    +spaceId: UUID
+    +customerId: UUID
+    +start_datetime: DateTime
+    +end_datetime: DateTime
+    +status: ReservationStatus
+    +status_payment: PaymentStatus
+    +total_amount: Decimal
+    +created_at: DateTime
+  }
+
+  enum ReservationStatus {
+    PENDING, CONFIRMED, CANCELLED, COMPLETED
+  }
+
+  class Payment {
+    +id: UUID
+    +reservationId: UUID
+    +amount: Decimal
+    +paid_at: DateTime
+    +method: PaymentMethod
+  }
+
+  enum PaymentMethod {
+    CASH, CARD, TRANSFER
+  }
+  
+  enum PaymentStatus {
+    NO_DEPOSIT, DEPOSIT, PAID, REFUNDED
+  }
+
+  class Worker {
+    +userId: UUID
+    +username: String
+    +password_hash: String
+  }
+  
+  enum Role {
+    ADMIN, CLERK, CLIENT
+  }
+
+  class AuditLog {
+    +id: UUID
+    +action: String
+    +timestamp: DateTime
+    +performed_by: UUID
+    +reserved_by: UUID
+    +branchId: UUID
+    +details: Text
+  }
+  
+  class Schedule{
+    +id: UUID
+    +calendar: CALENDAR
+  }
+
+  Space *-- Schedule
+  Space "1" *-- "0..*" Photo
+  User "1" *-- "0..*" Reservation
+  Space "1" *-- "0..*" Reservation
+  Reservation "1" *-- "0..*" Payment
+  User "1" -- "0..*" AuditLog
+  Reservation "1" *-- "0..*" AuditLog
+  Branch "1" *-- "0..*"AuditLog
+  Worker "1" -- "0..*"AuditLog
+  
+  User --> Worker
+}
+@enduml
