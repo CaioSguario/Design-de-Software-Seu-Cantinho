@@ -620,6 +620,121 @@ paths:
         '404':
           description: Admin não encontrada
 
+  /auditorias:
+    get:
+      summary: Lista todos as auditorias
+      responses:
+        '200':
+          description: Lista de auditorias
+    post:
+      summary: Cria uma nova auditoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auditoria'
+      responses:
+        '201':
+          description: Auditoria criado com sucesso
+    options:
+      summary: Lista métodos permitidos
+      responses:
+        '200':
+          description: Métodos permitidos
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
+
+  /auditorias/{id}:
+    get:
+      summary: Retorna uma auditoria pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: auditoria encontrada
+        '404':
+          description: auditoria não encontrada
+
+    put:
+      summary: Substitui uma auditoria existente
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auditoria'
+      responses:
+        '200':
+          description: Auditoria atualizada
+        '404':
+          description: Auditoria não encontrada
+
+    patch:
+      summary: Atualiza parcialmente uma auditoria
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                senha_hash:
+                  type: string
+      responses:
+        '200':
+          description: Auditoria atualizada parcialmente
+        '404':
+          description: Auditoria não encontrada
+
+    delete:
+      summary: Remove uma auditoria
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Auditoria removida com sucesso
+        '404':
+          description: Auditoria não encontrada
+
+    head:
+      summary: Verifica existência da auditoria (sem corpo)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Auditoria existe
+        '404':
+          description: Auditoria não encontrada
 
 components:
   schemas:
@@ -748,3 +863,29 @@ components:
           type: string
         senha_hash:
           type: string
+
+    auditoria:
+      type: object
+      required:
+        - id
+        - acao
+        - timestamp
+        - feito_por
+        - reservado_por
+        - detalhes
+      properties:
+        id:
+          type: integer
+          example: 1
+        acao:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-09-25T14:00:00
+        feito_por:
+          type: integer
+        reservado_por:
+          type: integer
+        detalhes:
+          type: string  
