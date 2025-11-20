@@ -30,7 +30,6 @@ app.get('/pagamentos/:id', (req, res) => {
   const reservas = load_reservas();
   const pagamentos = reservas.find(c => c.id === Number(req.params.id)).pagamentos;
   if (!pagamentos) return res.status(404).json({ erro: 'Não encontrado' });
-  res.json();
   res.json(pagamentos);
 });
 
@@ -76,7 +75,7 @@ app.patch('/pagamentos/:id', (req, res) => {
 
 app.delete('/pagamentos/:id', (req, res) => {
   let pagamentos = load_pagamentos();
-  const index = pagamentos.findIndex(c => c.id === Number(req.params.id));
+  const index = pagamentos.find(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
   pagamentos.splice(index, 1);

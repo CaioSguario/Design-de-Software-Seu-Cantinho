@@ -4,19 +4,20 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
+const { get_next_id } = require('./utils');
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-const filePath = path.join(__dirname, 'db', 'reservas.json');
+const db_path = path.join(__dirname, 'db', 'reservas.json');
 
 function load_reservas() {
-  const data = fs.readFileSync(filePath);
+  const data = fs.readFileSync(db_path);
   return JSON.parse(data);
 } 
 
 function save_reservas(consultas) {
-  fs.writeFileSync(filePath, JSON.stringify(consultas, null, 2));
+  fs.writeFileSync(db_path, JSON.stringify(consultas, null, 2));
 }
 
 app.get('/reservas/', (req, res) => {

@@ -3,19 +3,20 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
+const { get_next_id } = require('./utils');
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
-const filePath = path.join(__dirname, 'db', 'espacos.json');
+const db_path = path.join(__dirname, 'db', 'espacos.json');
 
 function load_espacos() {
-  const data = fs.readFileSync(filePath);
+  const data = fs.readFileSync(db_path);
   return JSON.parse(data);
 } 
 
 function save_espacos(espaco) {
-  fs.writeFileSync(filePath, JSON.stringify(espaco, null, 2));
+  fs.writeFileSync(db_path, JSON.stringify(espaco, null, 2));
 }
 
 app.get('/espacos/', (req, res) => {
