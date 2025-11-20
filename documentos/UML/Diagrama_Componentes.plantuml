@@ -1,0 +1,48 @@
+@startuml
+title Diagrama de Componentes - Arquitetura Orientada a Eventos "Seu Cantinho"
+
+rectangle "Broker" {
+    Interface "HTTP/HTTPS" as HTTP
+    Interface "APIs Únicas" as API
+    
+    component "Broker de Eventos" as Broker_
+}
+component "Interface Web" as WebUI
+
+rectangle "Módulos" {
+component "Reserva" as Reservas
+component "Espaços" as Espacos
+component "Cliente" as Clientes
+component "Pagamento" as Pagamentos
+component "Autenticação e Usuários" as Auth
+component "Relatórios e Auditoria" as Relatorios
+}
+
+rectangle "Persistência" {
+    component "Repositórios / ORM" as ORM
+    database "Banco de Dados Centralizado" as DB
+    database "Armazenamento de Fotos" as Storage
+}
+
+' Comunicações de Aplicação
+WebUI -r- HTTP : Eventos Gerais
+HTTP -r- Broker_
+API -u- Broker_
+
+' Módulos publicando eventos
+Auth -u- API : AutenticacaoCred
+Clientes -u- API : CRUD
+Espacos -u- API : CRUD
+Reservas -u- API : ReservaCriada / ReservaCancelada
+Pagamentos -u- API : PagamentoRealizado / PagamentoPendente
+Relatorios -u- API : RelatorioAtualizado
+
+' Persistência
+ORM -d- DB
+API -up-> Persistência : Salvar/Obter Dados
+
+' Serviços externos
+component "Serviço de Notificações (E-mail/SMS)" as Notificacoes
+Pagamentos -d-> Notificacoes : ConfirmacaoPagamento
+Reservas -d-> Notificacoes : ConfirmacaoReserva
+@enduml
