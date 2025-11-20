@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seu Cantinho</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
+    header { background: #4f46e5; color: #fff; padding: 16px; }
+    nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; }
+    nav a { margin-right: 12px; text-decoration: none; color: #4f46e5; }
+    .page { display: none; padding: 20px; }
+    .active { display: block; }
+    h2 { margin-top: 0; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    table th, table td { border: 1px solid #ccc; padding: 8px; }
+    table th { background: #eee; }
+    button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; }
+    button.secondary { background: #e5e7eb; color: #111; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Seu Cantinho</h1>
+</header>
+
+<nav>
+  <a href="#" onclick="openPage('locais')">Locais</a>
+  <a href="#" onclick="openPage('usuarios')">Usuários</a>
+  <a href="#" onclick="openPage('reservas')">Reservas</a>
+  <a href="#" onclick="openPage('pagamentos')">Pagamentos</a>
+</nav>
+
+<!-- CRUD LOCAIS -->
+<div id="locais" class="page active">
+  <h2>Locais</h2>
+  <div class="card">
+    <h3>Novo Local</h3>
+    <input placeholder="Nome" />
+    <input placeholder="Capacidade" type="number" />
+    <input placeholder="Descrição" />
+    <button>Salvar</button>
+  </div>
+
+  <div class="card">
+    <h3>Lista de Locais</h3>
+    <table>
+      <tr><th>ID</th><th>Nome</th><th>Capacidade</th><th>Ações</th></tr>
+      <tr><td>v-1</td><td>Sala Azul</td><td>12</td><td><button>Editar</button> <button class="secondary">Excluir</button></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- CRUD USUÁRIOS -->
+<div id="usuarios" class="page">
+  <h2>Usuários</h2>
+  <div class="card">
+    <h3>Novo Usuário</h3>
+    <input placeholder="Nome" />
+    <input placeholder="Email" />
+    <input placeholder="Senha" type="password" />
+    <button>Salvar</button>
+  </div>
+
+  <div class="card">
+    <h3>Lista de Usuários</h3>
+    <table>
+      <tr><th>ID</th><th>Nome</th><th>Email</th><th>Ações</th></tr>
+      <tr><td>u-1</td><td>Maria</td><td>maria@example.com</td><td><button>Editar</button> <button class="secondary">Excluir</button></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- CRUD RESERVAS -->
+<div id="reservas" class="page">
+  <h2>Reservas</h2>
+  <div class="card">
+    <h3>Nova Reserva</h3>
+    <select><option>Selecione Local</option></select>
+    <select><option>Selecione Usuário</option></select>
+    <input type="date" />
+    <input type="time" />
+    <input type="time" />
+    <button>Salvar</button>
+  </div>
+
+  <div class="card">
+    <h3>Lista de Reservas</h3>
+    <table>
+      <tr><th>ID</th><th>Local</th><th>Usuário</th><th>Data</th><th>Horário</th><th>Ações</th></tr>
+      <tr><td>r-1</td><td>Sala Azul</td><td>Maria</td><td>2025-11-20</td><td>09:00-10:00</td><td><button>Editar</button> <button class="secondary">Excluir</button></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- CRUD PAGAMENTOS -->
+<div id="pagamentos" class="page">
+  <h2>Pagamentos</h2>
+  <div class="card">
+    <h3>Novo Pagamento</h3>
+    <select><option>Reserva</option></select>
+    <input placeholder="Valor" type="number" />
+    <select>
+      <option>Status</option>
+      <option>Aprovado</option>
+      <option>Pendente</option>
+      <option>Cancelado</option>
+    </select>
+    <button>Salvar</button>
+  </div>
+
+  <div class="card">
+    <h3>Lista de Pagamentos</h3>
+    <table>
+      <tr><th>ID</th><th>Reserva</th><th>Valor</th><th>Status</th><th>Ações</th></tr>
+      <tr><td>p-1</td><td>r-1</td><td>120.00</td><td>Aprovado</td><td><button>Editar</button> <button class="secondary">Excluir</button></td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function openPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
+

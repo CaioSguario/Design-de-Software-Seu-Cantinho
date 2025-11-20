@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gerenciar Usuários</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
+        header { background: #4f46e5; color: #fff; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: #fff; text-decoration: none; }
+
+        .page { padding: 20px; }
+        h2 { margin-top: 0; }
+
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        table th, table td { border: 1px solid #ccc; padding: 8px; }
+        table th { background: #eee; }
+
+        button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        button.secondary { background: #e5e7eb; color: #111; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Gerenciar Usuários</h1>
+    <a href="index.html">Voltar ao Menu</a>
+</header>
+
+<div id="usuarios" class="page active">
+    <h2>Usuários</h2>
+
+    <div class="card">
+        <h3>Novo Usuário</h3>
+        <input placeholder="Nome" />
+        <input placeholder="CPF" />
+        <input placeholder="Email" />
+        <button>Salvar</button>
+    </div>
+
+    <div class="card">
+        <h3>Lista de Usuários</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+
+            <tr>
+                <td>u-1</td>
+                <td>João da Silva</td>
+                <td>123.456.789-00</td>
+                <td>joao@example.com</td>
+                <td>
+                    <button>Editar</button>
+                    <button class="secondary">Excluir</button>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
+
