@@ -4,6 +4,7 @@
   "description": "Trabalho de Design de Software",
   "main": "index.js",
   "scripts": {
+    "start": "node ./reservas_svc/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

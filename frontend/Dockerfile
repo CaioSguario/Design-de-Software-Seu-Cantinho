@@ -1,15 +1,15 @@
-FROM node:20
+#Usar a imagem oficial do Nginx
+FROM nginx:alpine
 
-WORKDIR /app
+# Remover arquivos padrões do Nginx
+RUN rm -rf /usr/share/nginx/html/*
 
-COPY package*.json ./
-RUN npm install
+# Copiar seus arquivos HTML para a pasta pública do Nginx
+COPY . /usr/share/nginx/html
 
-COPY . .
+# Expor a porta padrão do Nginx
+EXPOSE 80
 
-RUN npm run build || echo "Ignorando build (modo dev)"
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev", "--", "--host"]
+# Comando padrão (já incluso na imagem base)
+CMD ["nginx", "-g", "daemon off;"]
 
