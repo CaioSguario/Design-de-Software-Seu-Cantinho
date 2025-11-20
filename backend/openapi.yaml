@@ -113,7 +113,7 @@ paths:
         - in: path
           name: id
           required: true
-          schema:1
+          schema:
             type: integer
       responses:
         '200':
