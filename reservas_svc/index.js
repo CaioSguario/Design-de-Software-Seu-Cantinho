@@ -22,66 +22,65 @@ app.get('/reservas/', (req, res) => {
 app.get('/reservas/:id', (req, res) => {
   const reservas = loadReservas();
   const reserva = reservas.find(c => c.id === Number(req.params.id));
-  if (!) return res.status(404).json({ erro: 'Não encontrada' });
-  res.json();
+  if (!reserva) return res.status(404).json({ erro: 'Não encontrada' });
   res.json(users);
 });
 
 app.post('/reservas', async (req, res) =>{
-  const { pacienteId, medico, data } = req.body;
+  const { espacoId, medico, data } = req.body;
     try {
-      const resposta = await axios.get(`http://localhost:3001/pacientes/${pacienteId}`);
-      const paciente = resposta.data;
+      const resposta = await axios.get(`http://localhost:3001/espacos/${espacoId}`);
+      const espaco = resposta.data;
   
       const reservas = loadReservas();
-      const nova = { id , paciente, medico, data, created_at : Date.now()};
+      const nova = { id , espaco, medico, data, created_at : Date.now()};
       reservas.push(nova);
       saveReservas(reservas);
   
       res.status(201).json(nova);
     } catch {
-      res.status(400).json({ erro: 'Paciente inválido' });
+      res.status(400).json({ erro: 'Espaço inválido' });
     }
 });
 
 
 app.put('/reservas/:id', (req, res) => {
-  const consultas = loadReservas();
-  const index = consultas.findIndex(c => c.id === Number(req.params.id));
+  const reservas = loadReservas();
+  const index = reservas.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
-  consultas[index] = { id: Number(req.params.id), ...req.body };
-  saveReservas(consultas);
+  reservas[index] = { id: Number(req.params.id), ...req.body };
+  saveReservas(reservas);
 
-  res.json(consultas[index]);
+  res.json(reservas[index]);
 });
 
 app.patch('/reservas/:id', (req, res) => {
-  const consultas = loadReservas();
-  const consulta = consultas.find(c => c.id === Number(req.params.id));
-  if (!consulta) return res.status(404).json({ erro: 'Não encontrada' });
+  const reservas = loadReservas();
+  const reserva = reservas.find(c => c.id === Number(req.params.id));
+  if (!reserva) return res.status(404).json({ erro: 'Não encontrada' });
 
-  Object.assign(consulta, req.body);
-  saveReservas(consultas);
+  Object.assign(reserva, req.body);
+  saveReservas(reservas);
 
-  res.json(consulta);
+  res.json(reserva);
 });
 
 app.delete('/reservas/:id', (req, res) => {
-  let consultas = loadReservas();
-  const index = consultas.findIndex(c => c.id === Number(req.params.id));
+  let reservas = loadReservas();
+  const index = reservas.findIndex(c => c.id === Number(req.params.id));
   if (index === -1) return res.status(404).json({ erro: 'Não encontrada' });
 
-  consultas.splice(index, 1);
-  saveReservas(consultas);
+  reservas.splice(index, 1);
+  saveReservas(reservas);
 
   res.status(204).send();
 });
 
 
 app.head('/reservas/:id', (req, res) => {
-  const consultas = loadReservas();
-  const exists = consultas.some(c => c.id === Number(req.params.id));
+  const reservas = loadReservas();
+  const exists = reservas.some(c => c.id === Number(req.params.id));
   res.sendStatus(exists ? 200 : 404);
 });
 
@@ -93,6 +92,6 @@ const doc = yaml.load(fs.readFileSync('./openapi.yaml', 'utf8'));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(doc));
 
 app.listen(PORT, () => {
-  console.log(`seu_cantinho rodando em http://localhost:${PORT}`);
+  console.log(`reservas_svc rodando em http://localhost:${PORT}`);
 });
 
