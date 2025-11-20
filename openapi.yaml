@@ -254,7 +254,7 @@ paths:
         '200':
           description: Espaço existe
         '404':
-          description: Espaço não encontrada
+          description: Espaço não encontrado
 
   /usuarios:
     get:
@@ -263,7 +263,7 @@ paths:
         '200':
           description: Lista de usuários
     post:
-      summary: Cria um novo usuários
+      summary: Cria um novo usuário
       requestBody:
         required: true
         content:
@@ -378,7 +378,7 @@ paths:
         '200':
           description: Usuário existe
         '404':
-          description: Usuário não encontrada
+          description: Usuário não encontrado
 
   /pagamentos:
     get:
@@ -458,18 +458,16 @@ paths:
             schema:
               type: object
               properties:
-                nome:
+                reserva_id:
+                  type: integer
+                quantia:
+                  type: number
+                pago_em:
                   type: string
-                cpf_cnpj:
-                  type: string
-                email:
-                  type: string
-                telefone:
-                  type: string
-                endereco:
-                  type: string
-                cargo:
-                  type: string  
+                  format: date-time
+                  example: 2025-09-25T14:00:00
+                metodo:
+                  type: string 
       responses:
         '200':
           description: Pagamento atualizado parcialmente
@@ -502,7 +500,7 @@ paths:
         '200':
           description: Pagamento existe
         '404':
-          description: Pagamento não encontrada
+          description: Pagamento não encontrado
 
   /admins:
     get:
@@ -618,11 +616,11 @@ paths:
         '200':
           description: Admin existe
         '404':
-          description: Admin não encontrada
+          description: Admin não encontrado
 
   /auditorias:
     get:
-      summary: Lista todos as auditorias
+      summary: Lista todas as auditorias
       responses:
         '200':
           description: Lista de auditorias
@@ -636,7 +634,7 @@ paths:
               $ref: '#/components/schemas/auditoria'
       responses:
         '201':
-          description: Auditoria criado com sucesso
+          description: Auditoria criada com sucesso
     options:
       summary: Lista métodos permitidos
       responses:
@@ -698,10 +696,18 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                acao:
                   type: string
-                senha_hash:
+                timestamp:
                   type: string
+                  format: date-time
+                  example: 2025-09-25T14:00:00
+                feito_por:
+                  type: integer
+                reservado_por:
+                  type: integer
+                detalhes:
+                  type: string 
       responses:
         '200':
           description: Auditoria atualizada parcialmente
