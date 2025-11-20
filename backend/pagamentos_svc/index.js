@@ -36,7 +36,7 @@ app.get('/pagamentos/:id', (req, res) => {
 app.post('/pagamentos', async (req, res) =>{
   const { reserva_id, quantidade, pago_em, metodo} = req.body;
     try {
-      const resposta = await axios.get(`http://localhost:3001/reservas/${reserva_id}`);
+      const resposta = await axios.get(`http://localhost:3000/reservas/${reserva_id}`);
       const reserva = resposta.data;
     
       const pagamentos = load_pagamentos();
