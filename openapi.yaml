@@ -387,7 +387,7 @@ paths:
         '200':
           description: Lista de pagamentos
     post:
-      summary: Cria um novo pagamentos
+      summary: Cria um novo pagamento
       requestBody:
         required: true
         content:
@@ -491,7 +491,7 @@ paths:
           description: Pagamento não encontrado
 
     head:
-      summary: Verifica existência do usuário (sem corpo)
+      summary: Verifica existência do pagamento (sem corpo)
       parameters:
         - in: path
           name: id
@@ -500,9 +500,125 @@ paths:
             type: integer
       responses:
         '200':
-          description: Usuário existe
+          description: Pagamento existe
         '404':
-          description: Usuário não encontrada
+          description: Pagamento não encontrada
+
+  /admins:
+    get:
+      summary: Lista todos os admins
+      responses:
+        '200':
+          description: Lista de admins
+    post:
+      summary: Cria um novo admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin'
+      responses:
+        '201':
+          description: Admin criado com sucesso
+    options:
+      summary: Lista métodos permitidos
+      responses:
+        '200':
+          description: Métodos permitidos
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
+
+  /admins/{id}:
+    get:
+      summary: Retorna um admin pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: admin encontrado
+        '404':
+          description: admin não encontrado
+
+    put:
+      summary: Substitui um admin existente
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin'
+      responses:
+        '200':
+          description: Admin atualizado
+        '404':
+          description: Admin não encontrado
+
+    patch:
+      summary: Atualiza parcialmente um admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                senha_hash:
+                  type: string
+      responses:
+        '200':
+          description: Admin atualizado parcialmente
+        '404':
+          description: Admin não encontrado
+
+    delete:
+      summary: Remove um admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Admin removido com sucesso
+        '404':
+          description: Admin não encontrado
+
+    head:
+      summary: Verifica existência do admin (sem corpo)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Admin existe
+        '404':
+          description: Admin não encontrada
 
 
 components:
@@ -617,4 +733,18 @@ components:
           format: date-time
           example: 2025-09-25T14:00:00
         metodo:
+          type: string
+
+    admin:
+      type: object
+      required:
+        - usuario_id
+        - username
+        - senha_hash
+      properties:
+        usuario_id:
+          type: integer
+        username:
+          type: string
+        senha_hash:
           type: string
