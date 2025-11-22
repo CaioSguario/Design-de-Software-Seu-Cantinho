@@ -34,13 +34,13 @@ app.get('/pagamentos/:id', (req, res) => {
 });
 
 app.post('/pagamentos', async (req, res) =>{
-  const { reserva_id, quantidade, pago_em, metodo} = req.body;
+  const { reserva_id, quantia, pago_em, metodo} = req.body;
     try {
       const resposta = await axios.get(`http://localhost:3000/reservas/${reserva_id}`);
       const reserva = resposta.data;
     
       const pagamentos = load_pagamentos();
-      const novo = {id : get_next_id(db_path), reserva_id, quantidade, pago_em, metodo};
+      const novo = {id : get_next_id(db_path), reserva_id, quantia, pago_em, metodo};
       pagamentos.push(novo);
       save_pagamentos(pagamentos);
   
