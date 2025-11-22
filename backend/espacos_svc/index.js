@@ -3,7 +3,7 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
-const { get_next_id, check_bd } = require('./utils');
+const { get_next_id, check_bd } = require('../utils/utils');
 const app = express();
 const PORT = 3001;
 
