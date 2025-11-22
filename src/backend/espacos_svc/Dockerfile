@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "/app/reservas_svc/index.js"]
+CMD ["node", "index.js"]

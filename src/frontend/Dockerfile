@@ -5,7 +5,7 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copiar seus arquivos HTML para a pasta pública do Nginx
-COPY . /usr/share/nginx/html
+COPY ./src/ /usr/share/nginx/html
 
 # Expor a porta padrão do Nginx
 EXPOSE 80

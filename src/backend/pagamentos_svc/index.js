@@ -3,14 +3,21 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
-const { get_next_id, check_bd } = require('../utils/utils');
-const { load_reservas } = require('../reservas_svc');
+const axios = require("axios");
+const { get_next_id, check_bd } = require('./utils/utils');
 const app = express();
 const PORT = 3002;
 
 app.use(express.json());
 const db_path = path.join(__dirname, 'db', 'pagamentos.json');
 const db_dir = path.join(__dirname, 'db');
+
+const RESERVAS_URL = process.env.RESERVAS_URL || "http://reservas_svc:3000";
+
+async function getReservas() {
+    const resp = await axios.get(`${RESERVAS_URL}/reservas`);
+    return resp.data;
+}
 
 function load_pagamentos() {
   check_bd(db_dir, db_path);
@@ -30,7 +37,7 @@ app.get('/pagamentos/', (req, res) => {
 
 
 app.get('/pagamentos/:id', (req, res) => {
-  const reservas = load_reservas();
+  const reservas = getReservas();
   const pagamentos = reservas.find(c => c.id === Number(req.params.id)).pagamentos;
   if (!pagamentos) return res.status(404).json({ erro: 'Não encontrado' });
   res.json(pagamentos);
@@ -98,8 +105,9 @@ app.options('/pagamentos', (req, res) => {
   res.set('Allow', 'GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD');
   res.send();
 });
-
-const doc = yaml.load(fs.readFileSync('../openapi.yaml', 'utf8'));
+const doc = yaml.load(
+  fs.readFileSync(path.join(__dirname, 'openapi.yaml'), 'utf8')
+);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(doc));
 
 app.listen(PORT, () => {
