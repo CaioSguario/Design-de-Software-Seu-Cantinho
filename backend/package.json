@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/CaioSguario/design_software#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "js-yaml":"^4.1.0",
+    "axios":"^1.13.2",
+    "swagger-ui-express": "^4.6.3"
+
   }
 }
