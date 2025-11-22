@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: API de Consultas Médicas
+  title: API de Reserva de espaca
   version: 1.0.0
 
 paths:
@@ -113,7 +113,7 @@ paths:
         - in: path
           name: id
           required: true
-          schema:1
+          schema:
             type: integer
       responses:
         '200':
@@ -153,8 +153,6 @@ components:
         total_amount:
           type: number
         created_at:
-          type: string
-        data:
           type: string
           format: date-time
           example: 2025-09-25T14:00:00
