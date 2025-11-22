@@ -13,7 +13,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./src/backend
     container_name: design_backend
     depends_on:
       - db
@@ -24,12 +24,12 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./src/frontend
     container_name: design_frontend
     ports:
       - "8080:80"
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./src/frontend:/usr/share/nginx/html
 
 volumes:
   db_data:
