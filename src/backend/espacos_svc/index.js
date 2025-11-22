@@ -3,7 +3,7 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
-const { get_next_id, check_bd } = require('../utils/utils');
+const { get_next_id, check_bd } = require('./utils/utils');
 const app = express();
 const PORT = 3001;
 
@@ -94,8 +94,9 @@ app.options('/espacos', (req, res) => {
   res.set('Allow', 'GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD');
   res.send();
 });
-
-const doc = yaml.load(fs.readFileSync('../openapi.yaml', 'utf8'));
+const doc = yaml.load(
+  fs.readFileSync(path.join(__dirname, 'openapi.yaml'), 'utf8')
+);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(doc));
 
 app.listen(PORT, () => {
