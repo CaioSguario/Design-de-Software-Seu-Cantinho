@@ -34,13 +34,13 @@ app.get('/reservas/:id', (req, res) => {
 });
 
 app.post('/reservas', async (req, res) =>{
-  const { espaco_id, medico, data } = req.body;
+  const { espaco_id, cliente_id, data_inicio, data_fim, status, status_pagamento, preco_total } = req.body;
     try {
       const resposta = await axios.get(`http://localhost:3001/espacos/${espaco_id}`);
       const espaco = resposta.data;
   
       const reservas = load_reservas();
-      const nova = { id : get_next_id(db_path), espaco_id, medico, data, created_at : Date.now()};
+      const nova = { id : get_next_id(db_path), espaco_id, cliente_id, data_inicio, data_fim, status, status_pagamento, preco_total, criado_em : Date.now()};
       reservas.push(nova);
       save_reservas(reservas);
   
