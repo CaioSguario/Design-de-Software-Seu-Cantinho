@@ -1,0 +1,27 @@
+{
+  "name": "design_software",
+  "version": "1.0.0",
+  "description": "Trabalho de Design de Software",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaioSguario/design_software.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CaioSguario/design_software/issues"
+  },
+  "homepage": "https://github.com/CaioSguario/design_software#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "js-yaml":"^4.1.0",
+    "axios":"^1.13.2",
+    "swagger-ui-express": "^4.6.3"
+
+  }
+}

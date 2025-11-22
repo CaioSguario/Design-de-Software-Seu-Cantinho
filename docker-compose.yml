@@ -11,25 +11,78 @@ services:
     ports:
       - "5432:5432"
 
-  backend:
-    build:
-      context: ./src/backend
-    container_name: design_backend
+  broker:
+    build: ./src/broker
+    container_name: event_broker
+    ports:
+      - "4000:4000"
     depends_on:
       - db
-    ports:
-      - "3000:3000"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/design
 
+  espacos_svc:
+    build: ./src/backend/espacos_svc
+    container_name: espacos_svc
+    volumes:
+      - ./src/backend/utils:/app/utils
+      - ./src/backend/openapi.yaml:/app/openapi.yaml
+    depends_on:
+      - broker
+    ports:
+      - "3001:3001"
+    environment:
+      BROKER_URL: http://broker:4000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+
+  usuarios_svc:
+    build: ./src/backend/usuarios_svc
+    container_name: usuarios_svc
+    volumes:
+      - ./src/backend/utils:/app/utils
+      - ./src/backend/openapi.yaml:/app/openapi.yaml
+    depends_on:
+      - broker
+    ports:
+      - "3002:3002"
+    environment:
+      BROKER_URL: http://broker:4000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+
+  reservas_svc:
+    build: ./src/backend/reservas_svc
+    container_name: reservas_svc
+    volumes:
+      - ./src/backend/utils:/app/utils
+      - ./src/backend/openapi.yaml:/app/openapi.yaml
+    depends_on:
+      - broker
+    ports:
+      - "3003:3003"
+    environment:
+      BROKER_URL: http://broker:4000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+
+  pagamentos_svc:
+    build: ./src/backend/pagamentos_svc
+    container_name: pagamentos_svc
+    volumes:
+      - ./src/backend/utils:/app/utils
+      - ./src/backend/openapi.yaml:/app/openapi.yaml
+    depends_on:
+      - broker
+    ports:
+      - "3004:3004"
+    environment:
+      BROKER_URL: http://broker:4000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+      RESERVAS_URL: "http://reservas_svc:3000"
+
   frontend:
-    build:
-      context: ./src/frontend
+    build: ./src/frontend
     container_name: design_frontend
     ports:
       - "8080:80"
-    volumes:
-      - ./src/frontend:/usr/share/nginx/html
 
 volumes:
   db_data:
