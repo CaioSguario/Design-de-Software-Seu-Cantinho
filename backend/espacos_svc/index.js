@@ -29,7 +29,6 @@ app.get('/espacos/:id', (req, res) => {
   const espacos = load_espacos();
   const espaco = espacos.find(c => c.id === Number(req.params.id));
   if (!espaco) return res.status(404).json({ erro: 'Não encontrado' });
-  res.json();
   res.json(espaco);
 });
 
