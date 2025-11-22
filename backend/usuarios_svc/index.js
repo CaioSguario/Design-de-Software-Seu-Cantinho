@@ -33,10 +33,10 @@ app.get('/usuarios/:id', (req, res) => {
 });
 
 app.post('/usuarios', async (req, res) =>{
-  const { nome, cpf_cnpj, email, celular, endereco, cargo } = req.body;
+  const { nome, cpf_cnpj, email, telefone, endereco, cargo } = req.body;
     try {
       const usuarios = load_usuarios();
-      const novo = {id : get_next_id(db_path), nome, cpf_cnpj, email, celular, endereco, cargo};
+      const novo = {id : get_next_id(db_path), nome, cpf_cnpj, email, telefone, endereco, cargo};
       usuarios.push(novo);
       save_usuarios(usuarios);
   
