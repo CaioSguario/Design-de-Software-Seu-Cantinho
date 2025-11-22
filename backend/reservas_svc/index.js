@@ -10,13 +10,16 @@ const PORT = 3000;
 
 app.use(express.json());
 const db_path = path.join(__dirname, 'db', 'reservas.json');
+const db_dir = path.join(__dirname, 'db');
 
 function load_reservas() {
+  check_bd(db_dir, db_path);
   const data = fs.readFileSync(db_path);
   return JSON.parse(data);
 } 
 
 function save_reservas(consultas) {
+  check_bd(db_dir, db_path);
   fs.writeFileSync(db_path, JSON.stringify(consultas, null, 2));
 }
 

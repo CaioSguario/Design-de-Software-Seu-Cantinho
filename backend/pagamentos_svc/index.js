@@ -10,13 +10,16 @@ const PORT = 3002;
 
 app.use(express.json());
 const db_path = path.join(__dirname, 'db', 'pagamentos.json');
+const db_dir = path.join(__dirname, 'db');
 
 function load_pagamentos() {
+  check_bd(db_dir, db_path);
   const data = fs.readFileSync(db_path);
   return JSON.parse(data);
 } 
 
 function save_pagamentos(espaco) {
+  check_bd(db_dir, db_path);
   fs.writeFileSync(db_path, JSON.stringify(espaco, null, 2));
 }
 

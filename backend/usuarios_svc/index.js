@@ -9,13 +9,16 @@ const PORT = 3003;
 
 app.use(express.json());
 const db_path = path.join(__dirname, 'db', 'usuarios.json');
+const db_dir = path.join(__dirname, 'db');
 
 function load_usuarios() {
+  check_bd(db_dir, db_path);
   const data = fs.readFileSync(db_path);
   return JSON.parse(data);
 } 
 
 function save_usuarios(usuario) {
+  check_bd(db_dir, db_path);
   fs.writeFileSync(db_path, JSON.stringify(usuario, null, 2));
 }
 

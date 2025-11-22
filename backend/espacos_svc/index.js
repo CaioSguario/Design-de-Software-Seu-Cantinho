@@ -3,19 +3,22 @@ const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const path = require('path');
-const { get_next_id } = require('./utils');
+const { get_next_id, check_bd } = require('./utils');
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
 const db_path = path.join(__dirname, 'db', 'espacos.json');
+const db_dir = path.join(__dirname, 'db');
 
 function load_espacos() {
+  check_bd(db_dir, db_path);
   const data = fs.readFileSync(db_path);
   return JSON.parse(data);
-} 
+}
 
 function save_espacos(espaco) {
+  check_bd(db_dir, db_path);
   fs.writeFileSync(db_path, JSON.stringify(espaco, null, 2));
 }
 
@@ -32,18 +35,18 @@ app.get('/espacos/:id', (req, res) => {
   res.json(espaco);
 });
 
-app.post('/espacos', async (req, res) =>{
+app.post('/espacos', async (req, res) => {
   const { nome, descricao, capacidade, preco_por_hora, ativo } = req.body;
-    try {
-      const espacos = load_espacos();
-      const novo = {id : get_next_id(db_path), nome, descricao, capacidade, preco_por_hora, ativo};
-      espacos.push(novo);
-      save_espacos(espacos);
-  
-      res.status(201).json(novo);
-    } catch {
-      res.status(400).json({ erro: 'Dados inválidos' });
-    }
+  try {
+    const espacos = load_espacos();
+    const novo = { id: get_next_id(db_path), nome, descricao, capacidade, preco_por_hora, ativo };
+    espacos.push(novo);
+    save_espacos(espacos);
+
+    res.status(201).json(novo);
+  } catch {
+    res.status(400).json({ erro: 'Dados inválidos' });
+  }
 });
 
 

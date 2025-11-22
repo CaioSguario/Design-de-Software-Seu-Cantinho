@@ -18,6 +18,16 @@ function get_next_id(db_path) {
   return last + 1;
 }
 
+function check_bd(db_dir, db_path) {
+  if (!fs.existsSync(db_dir))
+    fs.mkdirSync(db_dir,)
+  if (!fs.existsSync(db_path)) {
+    fs.writeFileSync(db_path, JSON.stringify({ messages: [] }, null, 2));
+  }
+}
+
+
 module.exports = {
-  get_next_id
+  get_next_id,
+  check_bd
 };
