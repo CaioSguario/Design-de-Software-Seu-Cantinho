@@ -8,4 +8,4 @@ O trabalho consiste em um sistema para a rede de lojas de aluguel de espaços pa
 Para instalar o sistema, o usuário deve ulizar uma máquina Linux com Docker em versão 28.4.0 ou superior e clonar o repositório para a sua máquina.
 
 ### Execução
-Para executar o sistema, basta rodar "$docker compose up" na root do diretório e abrir o link http://localhost:8080 em seu navegador. Com isto, o usuário consegue gerenciar os espaços, reserva-los, gerenciar usuários e realizar pagamentos.
+Para executar o sistema, basta rodar "$sudo docker compose up" na root do diretório e abrir o link http://localhost:8080 em seu navegador. Com isto, o usuário consegue gerenciar os espaços, reserva-los, gerenciar usuários e realizar pagamentos.
