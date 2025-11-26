@@ -747,14 +747,14 @@ components:
     reserva:
       type: object
       required:
-        - reservaId
-        - spaceId
-        - costumerId
-        - start_date
-        - end_date
+        - id
+        - espaco_id
+        - cliente_id
+        - data_inicio 
+        - data_fim
         - status
-        - status_payment
-        - total_amount
+        - status_pagamento
+        - preco_total
       properties:
         id:
           type: integer
