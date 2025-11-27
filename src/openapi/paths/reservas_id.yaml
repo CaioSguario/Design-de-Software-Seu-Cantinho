@@ -1,0 +1,110 @@
+get:
+  tags:
+    - Reservas
+  summary: Retorna uma reserva pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Reserva encontrada
+    '404':
+      description: Reserva não encontrada
+
+put:
+  tags:
+    - Reservas
+  summary: Substitui uma reserva existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/reserva.yaml'
+  responses:
+    '200':
+      description: Reserva atualizada
+    '404':
+      description: Reserva não encontrada
+
+patch:
+  tags:
+    - Reservas
+  summary: Atualiza parcialmente uma reserva
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties: 
+            espaco_id:
+              type: integer
+            cliente_id:
+              type: integer
+            data_inicio:
+              type: string
+              format: date-time
+              example: 2025-09-25T14:00:00
+            data_fim:
+              type: string
+              format: date-time
+              example: 2025-09-25T14:00:00
+            status:
+              type: integer
+            status_pagamento:
+              type: integer
+            preco_total:
+              type: number
+  responses:
+    '200':
+      description: Reserva atualizada parcialmente
+    '404':
+      description: Reserva não encontrada
+
+delete:
+  tags:
+    - Reservas
+  summary: Remove uma reserva
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Reserva removida com sucesso
+    '404':
+      description: Reserva não encontrada
+
+head:
+  tags:
+    - Reservas
+  summary: Verifica existência da reserva (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Reserva existe
+    '404':
+      description: Reserva não encontrada

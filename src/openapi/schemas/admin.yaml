@@ -1,0 +1,12 @@
+type: object
+required:
+  - usuario_id
+  - username
+  - senha_hash
+properties:
+  usuario_id:
+    type: integer
+  username:
+    type: string
+  senha_hash:
+    type: string

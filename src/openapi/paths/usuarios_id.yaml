@@ -1,0 +1,104 @@
+get:
+  tags:
+    - Usuários
+  summary: Retorna um usuário pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Usuário encontrado
+    '404':
+      description: Usuário não encontrado
+
+put:
+  tags:
+    - Usuários
+  summary: Substitui um usuário existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/usuario.yaml'
+  responses:
+    '200':
+      description: Usuário atualizado
+    '404':
+      description: Usuário não encontrado
+
+patch:
+  tags:
+    - Usuários
+  summary: Atualiza parcialmente um usuário
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            nome:
+              type: string
+            cpf_cnpj:
+              type: string
+            email:
+              type: string
+            telefone:
+              type: string
+            endereco:
+              type: string
+            cargo:
+              type: string  
+  responses:
+    '200':
+      description: Usuário atualizado parcialmente
+    '404':
+      description: Usuário não encontrado
+
+delete:
+  tags:
+    - Usuários
+  summary: Remove um usuário
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Usuário removido com sucesso
+    '404':
+      description: Usuário não encontrado
+
+head:
+  tags:
+    - Usuários
+  summary: Verifica existência do usuário (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Usuário existe
+    '404':
+      description: Usuário não encontrado

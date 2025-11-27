@@ -1,0 +1,36 @@
+type: object
+required:
+  - id
+  - espaco_id
+  - cliente_id
+  - data_inicio
+  - data_fim
+  - status
+  - status_pagamento
+  - preco_total
+properties:
+  id:
+    type: integer
+    example: 1
+  espaco_id:
+    type: integer
+  cliente_id:
+    type: integer
+  data_inicio:
+    type: string
+    format: date-time
+    example: 2025-09-25 14:00:00
+  data_fim:
+    type: string
+    format: date-time
+    example: 2025-09-25 14:00:00
+  status:
+    type: integer
+  status_pagamento:
+    type: integer
+  preco_total:
+    type: number
+  criado_em:
+    type: string
+    format: date-time
+    example: 2025-09-25 14:00:00

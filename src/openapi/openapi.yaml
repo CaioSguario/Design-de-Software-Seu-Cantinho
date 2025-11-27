@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: API do "Seu Cantinho"
+  version: 1.0.0
+
+paths:
+  /reservas:
+    $ref: "paths/reservas.yaml"
+
+  /reservas/{id}:
+    $ref: "paths/reservas_id.yaml"
+
+  /espacos:
+    $ref: "paths/espacos.yaml"
+
+  /espacos/{id}:
+    $ref: "paths/espacos_id.yaml"
+
+  /usuarios:
+    $ref: "paths/usuarios.yaml"
+
+  /usuarios/{id}:
+    $ref: "paths/usuarios_id.yaml"
+
+  /pagamentos:
+    $ref: "paths/pagamentos.yaml"
+
+  /pagamentos/{id}:
+    $ref: "paths/pagamentos_id.yaml"
+
+  /admins:
+    $ref: "paths/admins.yaml"
+
+  /admins/{id}:
+    $ref: "paths/admins_id.yaml"
+
+  /auditorias:
+    $ref: "./paths/auditorias.yaml"
+
+  /auditorias/{id}:
+    $ref: "./paths/auditorias_id.yaml"
+
+components:
+  schemas:
+    reserva:
+      $ref: "./schemas/reserva.yaml"
+    espaco:
+      $ref: "./schemas/espaco.yaml"
+    usuario:
+      $ref: "./schemas/usuario.yaml"
+    pagamento:
+      $ref: "./schemas/pagamento.yaml"
+    admin:
+      $ref: "./schemas/admin.yaml"
+    auditoria:
+      $ref: "./schemas/auditoria.yaml"
+

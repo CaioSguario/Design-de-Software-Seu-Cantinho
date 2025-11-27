@@ -1,0 +1,35 @@
+get:
+  tags:
+    - Admins
+  summary: Lista todos os admins
+  responses:
+    '200':
+      description: Lista de admins
+
+post:
+  summary: Cria um novo admin
+  tags:
+    - Admins
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/admin.yaml"
+  responses:
+    '201':
+      description: Admin criado com sucesso
+
+options:
+  summary: "Lista métodos permitidos"
+  tags:
+    - Admins
+  responses:
+    '200':
+      description: "Métodos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
+

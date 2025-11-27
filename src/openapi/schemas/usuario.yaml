@@ -1,0 +1,25 @@
+type: object
+required:
+  - id
+  - nome
+  - cpf_cnpj
+  - email
+  - telefone
+  - endereco
+  - cargo
+properties:
+  id:
+    type: integer
+    example: 1
+  nome:
+    type: string
+  cpf_cnpj:
+    type: string
+  email:
+    type: string
+  telefone:
+    type: string
+  endereco:
+    type: string
+  cargo:
+    type: string

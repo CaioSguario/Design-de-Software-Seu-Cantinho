@@ -1,0 +1,96 @@
+get:
+  tags:
+    - Admins
+  summary: Retorna um admin pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: admin encontrado
+    '404':
+      description: admin não encontrado
+
+put:
+  tags:
+    - Admins
+  summary: Substitui um admin existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/admin.yaml'
+  responses:
+    '200':
+      description: Admin atualizado
+    '404':
+      description: Admin não encontrado
+
+patch:
+  tags:
+    - Admins
+  summary: Atualiza parcialmente um admin
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+            senha_hash:
+              type: string
+  responses:
+    '200':
+      description: Admin atualizado parcialmente
+    '404':
+      description: Admin não encontrado
+
+delete:
+  tags:
+    - Admins
+  summary: Remove um admin
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Admin removido com sucesso
+    '404':
+      description: Admin não encontrado
+
+head:
+  tags:
+    - Admins
+  summary: Verifica existência do admin (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Admin existe
+    '404':
+      description: Admin não encontrado

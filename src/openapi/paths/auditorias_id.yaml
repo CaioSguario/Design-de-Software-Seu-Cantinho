@@ -1,0 +1,104 @@
+get:
+  tags:
+    - Auditoria
+  summary: Retorna uma auditoria pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: auditoria encontrada
+    '404':
+      description: auditoria não encontrada
+
+put:
+  tags:
+    - Auditoria
+  summary: Substitui uma auditoria existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/auditoria.yaml'
+  responses:
+    '200':
+      description: Auditoria atualizada
+    '404':
+      description: Auditoria não encontrada
+
+patch:
+  tags:
+    - Auditoria
+  summary: Atualiza parcialmente uma auditoria
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            acao:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+              example: 2025-09-25T14:00:00
+            feito_por:
+              type: integer
+            reservado_por:
+              type: integer
+            detalhes:
+              type: string 
+  responses:
+    '200':
+      description: Auditoria atualizada parcialmente
+    '404':
+      description: Auditoria não encontrada
+
+delete:
+  tags:
+    - Auditoria
+  summary: Remove uma auditoria
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Auditoria removida com sucesso
+    '404':
+      description: Auditoria não encontrada
+
+head:
+  tags:
+    - Auditoria
+  summary: Verifica existência da auditoria (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Auditoria existe
+    '404':
+      description: Auditoria não encontrada

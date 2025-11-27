@@ -1,0 +1,33 @@
+get:
+  tags:
+    - Espaços
+  summary: "Lista todos os espa\xE7os"
+  responses:
+    '200':
+      description: "Lista de espa\xE7os"
+post:
+  tags:
+    - Espaços
+  summary: "Cria um novo espa\xE7o"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/espaco.yaml'
+  responses:
+    '201':
+      description: "Espa\xE7o criado com sucesso"
+
+options:
+  tags:
+    - Espaços
+  summary: "Lista m\xE9todos permitidos"
+  responses:
+    '200':
+      description: "M\xE9todos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD

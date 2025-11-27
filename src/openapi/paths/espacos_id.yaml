@@ -1,0 +1,103 @@
+get:
+  tags:
+    - Espaços
+  summary: Retorna um espaço pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Espaço encontrado
+    '404':
+      description: Espaço não encontrado
+
+put:
+  tags:
+    - Espaços
+  summary: Substitui um espaço existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/espaco.yaml'
+  responses:
+    '200':
+      description: Espaço atualizado
+    '404':
+      description: Espaço não encontrado
+
+patch:
+  tags:
+    - Espaços
+  summary: Atualiza parcialmente um espaço
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            nome:
+              type: string
+            descricao:
+              type: string
+            capacidade:
+              type: integer
+            preco_por_hora:
+              type: number
+            ativo:
+              type: boolean
+  responses:
+    '200':
+      description: Espaço atualizado parcialmente
+    '404':
+      description: Espaço não encontrado
+
+delete:
+  tags:
+    - Espaços
+  summary: Remove um espaço
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Espaço removido com sucesso
+    '404':
+      description: Espaço não encontrado
+
+head:
+  tags:
+    - Espaços
+  summary: Verifica existência do espaço (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Espaço existe
+    '404':
+      description: Espaço não encontrado
+
