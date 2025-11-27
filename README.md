@@ -11,4 +11,4 @@ Para instalar o sistema, o usuário deve utilizar uma máquina Linux com Docker 
 ### Execução
 Para executar o sistema, basta rodar "$sudo docker compose up" na root do diretório e abrir o link http://localhost:8080 em seu navegador. Com isto, o usuário consegue gerenciar os espaços, reserva-los, gerenciar usuários e realizar pagamentos.
 
-Para verificação da documentação swagger deve ser ??
+Para verificação da documentação swagger deve-se (após criação dos containers do docker), abrir o link http://localhost:8081 em seu navegador.
