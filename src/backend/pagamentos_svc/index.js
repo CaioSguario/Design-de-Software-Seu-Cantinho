@@ -37,16 +37,16 @@ app.get('/pagamentos/', (req, res) => {
 
 
 app.get('/pagamentos/:id', (req, res) => {
-  const reservas = getReservas();
-  const pagamentos = reservas.find(c => c.id === Number(req.params.id)).pagamentos;
-  if (!pagamentos) return res.status(404).json({ erro: 'Não encontrado' });
-  res.json(pagamentos);
+  const pagamentos = load_pagamentos();
+  const pagamento = pagamentos.find(c => c.id === Number(req.params.id));
+  if (!pagamento) return res.status(404).json({ erro: 'Não encontrado' });
+  res.json(pagamento);
 });
 
 app.post('/pagamentos', async (req, res) =>{
   const { reserva_id, quantia, pago_em, metodo} = req.body;
     try {
-      const resposta = await axios.get(`http://localhost:3000/reservas/${reserva_id}`);
+      const resposta = await axios.get(`http://reservas_svc:3000/reservas/${reserva_id}`);
       const reserva = resposta.data;
     
       const pagamentos = load_pagamentos();
