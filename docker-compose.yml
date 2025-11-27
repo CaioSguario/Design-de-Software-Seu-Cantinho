@@ -40,7 +40,7 @@ services:
     depends_on:
       - broker
     ports:
-      - "3002:3002"
+      - "3003:3003"
     environment:
       BROKER_URL: http://broker:4000
     restart: unless-stopped
@@ -54,7 +54,7 @@ services:
     depends_on:
       - broker
     ports:
-      - "3003:3003"
+      - "3000:3000"
     environment:
       BROKER_URL: http://broker:4000
     restart: unless-stopped
@@ -68,7 +68,7 @@ services:
     depends_on:
       - broker
     ports:
-      - "3004:3004"
+      - "3002:3002"
     environment:
       BROKER_URL: http://broker:4000
       RESERVAS_URL: "http://reservas_svc:3003"

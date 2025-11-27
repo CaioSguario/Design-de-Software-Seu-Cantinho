@@ -65,7 +65,7 @@ app.post('/reservas', async (req, res) => {
   const fim = new Date(data_fim).getTime();
 
   try {
-    const resposta = await axios.get(`http://localhost:3001/espacos/${espaco_id}`);
+    const resposta = await axios.get(`http://espacos_svc:3001/espacos/${espaco_id}`);
 
     const reservas = load_reservas();
 
@@ -78,7 +78,8 @@ app.post('/reservas', async (req, res) => {
     save_reservas(reservas);
 
     res.status(201).json(nova);
-  } catch {
+  } catch(error) {
+    console.error("Erro ao buscar espaço:", error.message);
     res.status(400).json({ erro: 'Espaço inválido' });
   }
 });

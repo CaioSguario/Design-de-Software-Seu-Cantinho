@@ -35,16 +35,31 @@ app.get('/espacos/:id', (req, res) => {
   res.json(espaco);
 });
 
-app.post('/espacos', async (req, res) => {
+app.post('/espacos', (req, res) => { 
   const { nome, descricao, capacidade, preco_por_hora, ativo } = req.body;
+  
   try {
     const espacos = load_espacos();
-    const novo = { id: get_next_id(db_path), nome, descricao, capacidade, preco_por_hora, ativo };
+    
+    const novo = { 
+      id: get_next_id(db_path), 
+      nome, 
+      descricao, 
+      capacidade: Number(capacidade) || 0, 
+      preco_por_hora: Number(preco_por_hora) || 0, 
+      ativo: ativo === undefined ? true : ativo 
+    };
+    
+    if (!nome) {
+      return res.status(400).json({ erro: 'Nome é obrigatório' });
+    }
+
     espacos.push(novo);
     save_espacos(espacos);
 
     res.status(201).json(novo);
-  } catch {
+  } catch (error) {
+    console.error('Erro no POST /espacos:', error); 
     res.status(400).json({ erro: 'Dados inválidos' });
   }
 });

@@ -12,16 +12,16 @@ const ROUTES = {
   usuarios:   "http://usuarios_svc:3003"
 };
 
-// Captura requisições sem path adicional
 app.all('/:service', async (req, res) => {
-  proxy(req, res, req.params.service, '');
+  proxy(req, res, req.params.service, req.params.service);
 });
 
-// Captura requisições COM path depois do service
 app.all('/:service/*', async (req, res) => {
   const service = req.params.service;
-  const path = req.params[0]; // wildcard capturado
-  proxy(req, res, service, path);
+  const path = req.params[0];
+  
+  const fullPath = `${service}/${path}`;
+  proxy(req, res, service, fullPath);
 });
 
 async function proxy(req, res, service, path) {
@@ -32,21 +32,32 @@ async function proxy(req, res, service, path) {
   const forwardUrl = `${base}/${path}`;
   console.log(`BROKER encaminhou para ${forwardUrl}`);
 
+  const forwardHeaders = { ...req.headers };
+  
+  delete forwardHeaders.host;
+  delete forwardHeaders.connection;
+  
+  delete forwardHeaders['content-length']; 
+  delete forwardHeaders['Content-Length']; 
+
+
   try {
     const response = await axios({
       method: req.method,
       url: forwardUrl,
-      data: req.body,
+      data: req.body, 
       params: req.query,
-      headers: req.headers,
+      headers: forwardHeaders,
     });
 
     res.status(response.status).json(response.data);
 
   } catch (err) {
     if (err.response) {
+      console.error(`Erro no Microsserviço (${service}): Status ${err.response.status}`);
       return res.status(err.response.status).json(err.response.data);
     }
+    console.error("Erro de Rede ou Conexão:", err.message);
     res.status(500).json({ error: "Broker falhou", details: err.message });
   }
 }
@@ -54,4 +65,3 @@ async function proxy(req, res, service, path) {
 app.listen(PORT, () => {
   console.log(`BROKER rodando em http://localhost:${PORT}`);
 });
-
