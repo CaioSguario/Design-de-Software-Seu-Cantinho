@@ -1,0 +1,103 @@
+get:
+  tags:
+    - Pagamentos
+  summary: Retorna um pagamento pelo ID
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Pagamento encontrado
+    '404':
+      description: Pagamento não encontrado
+
+put:
+  tags:
+    - Pagamentos
+  summary: Substitui um pagamento existente
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/pagamento.yaml'
+  responses:
+    '200':
+      description: Pagamento atualizado
+    '404':
+      description: Pagamento não encontrado
+
+patch:
+  tags:
+    - Pagamentos
+  summary: Atualiza parcialmente um pagamento
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            reserva_id:
+              type: integer
+            quantia:
+              type: number
+            pago_em:
+              type: string
+              format: date-time
+              example: 2025-09-25T14:00:00
+            metodo:
+              type: string 
+  responses:
+    '200':
+      description: Pagamento atualizado parcialmente
+    '404':
+      description: Pagamento não encontrado
+
+delete:
+  tags:
+    - Pagamentos
+  summary: Remove um pagamento
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Pagamento removido com sucesso
+    '404':
+      description: Pagamento não encontrado
+
+head:
+  tags:
+    - Pagamentos
+  summary: Verifica existência do pagamento (sem corpo)
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Pagamento existe
+    '404':
+      description: Pagamento não encontrado
+

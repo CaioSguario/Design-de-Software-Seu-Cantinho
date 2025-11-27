@@ -106,7 +106,7 @@ app.options('/pagamentos', (req, res) => {
   res.send();
 });
 const doc = yaml.load(
-  fs.readFileSync(path.join(__dirname, 'openapi.yaml'), 'utf8')
+  fs.readFileSync('/openapi/openapi.yaml', 'utf8')
 );
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(doc));
 

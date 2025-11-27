@@ -1,0 +1,21 @@
+type: object
+required:
+  - id
+  - reserva_id
+  - quantia
+  - pago_em
+  - metodo
+properties:
+  id:
+    type: integer
+    example: 1
+  reserva_id:
+    type: integer
+  quantia:
+    type: number
+  pago_em:
+    type: string
+    format: date-time
+    example: 2025-09-25 14:00:00
+  metodo:
+    type: string

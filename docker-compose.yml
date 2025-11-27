@@ -1,89 +1,82 @@
 services:
-  db:
-    image: postgres:15
-    container_name: design_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: design
-    volumes:
-      - db_data:/var/lib/postgresql/data
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-docs
     ports:
-      - "5432:5432"
+      - "8081:8080"
+    environment:
+      SWAGGER_JSON: /openapi/openapi.yaml
+    volumes:
+      - ./src/openapi:/openapi:ro
+    restart: unless-stopped
 
   broker:
     build: ./src/broker
     container_name: event_broker
     ports:
       - "4000:4000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+    restart: unless-stopped
 
   espacos_svc:
     build: ./src/backend/espacos_svc
     container_name: espacos_svc
     volumes:
       - ./src/backend/utils:/app/utils
-      - ./src/backend/openapi.yaml:/app/openapi.yaml
+      - ./src/openapi:/openapi:ro
     depends_on:
       - broker
     ports:
       - "3001:3001"
     environment:
       BROKER_URL: http://broker:4000
-      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+    restart: unless-stopped
 
   usuarios_svc:
     build: ./src/backend/usuarios_svc
     container_name: usuarios_svc
     volumes:
       - ./src/backend/utils:/app/utils
-      - ./src/backend/openapi.yaml:/app/openapi.yaml
+      - ./src/openapi:/openapi:ro
     depends_on:
       - broker
     ports:
       - "3002:3002"
     environment:
       BROKER_URL: http://broker:4000
-      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+    restart: unless-stopped
 
   reservas_svc:
     build: ./src/backend/reservas_svc
     container_name: reservas_svc
     volumes:
       - ./src/backend/utils:/app/utils
-      - ./src/backend/openapi.yaml:/app/openapi.yaml
+      - ./src/openapi:/openapi:ro
     depends_on:
       - broker
     ports:
       - "3003:3003"
     environment:
       BROKER_URL: http://broker:4000
-      DATABASE_URL: postgres://postgres:postgres@db:5432/design
+    restart: unless-stopped
 
   pagamentos_svc:
     build: ./src/backend/pagamentos_svc
     container_name: pagamentos_svc
     volumes:
       - ./src/backend/utils:/app/utils
-      - ./src/backend/openapi.yaml:/app/openapi.yaml
+      - ./src/openapi:/openapi:ro
     depends_on:
       - broker
     ports:
       - "3004:3004"
     environment:
       BROKER_URL: http://broker:4000
-      DATABASE_URL: postgres://postgres:postgres@db:5432/design
-      RESERVAS_URL: "http://reservas_svc:3000"
+      RESERVAS_URL: "http://reservas_svc:3003"
+    restart: unless-stopped
 
   frontend:
     build: ./src/frontend
     container_name: design_frontend
     ports:
       - "8080:80"
-
-volumes:
-  db_data:
-
+    restart: unless-stopped

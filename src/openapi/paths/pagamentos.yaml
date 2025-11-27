@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Pagamentos
+  summary: Lista todos os pagamentos
+  responses:
+    '200':
+      description: Lista de pagamentos
+
+post:
+  tags:
+    - Pagamentos
+  summary: Cria um novo pagamento
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/pagamento.yaml'
+  responses:
+    '201':
+      description: Pagamento criado com sucesso
+
+options:
+  tags:
+    - Pagamentos
+  summary: "Lista m\xE9todos permitidos"
+  responses:
+    '200':
+      description: "M\xE9todos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD

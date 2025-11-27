@@ -1,0 +1,33 @@
+get:
+  tags: 
+      - Reservas
+  summary: Lista todas as reservas
+  responses:
+    '200':
+      description: Lista de reservas
+post:
+  tags:
+    - Reservas
+  summary: Cria uma nova reserva
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/reserva.yaml'
+  responses:
+    '201':
+      description: Reserva criada com sucesso
+
+options:
+  tags:
+    - Reservas
+  summary: "Lista m\xE9todos permitidos"
+  responses:
+    '200':
+      description: "M\xE9todos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD

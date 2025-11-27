@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Auditoria
+  summary: Lista todas as auditorias
+  responses:
+    '200':
+      description: Lista de auditorias
+
+post:
+  tags:
+    - Auditoria
+  summary: Cria uma nova auditoria
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/auditoria.yaml'
+  responses:
+    '201':
+      description: Auditoria criada com sucesso
+
+options:
+  tags:
+    - Auditoria
+  summary: "Lista métodos permitidos"
+  responses:
+    '200':
+      description: "Métodos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD

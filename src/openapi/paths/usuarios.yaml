@@ -1,0 +1,34 @@
+get:
+  tags:
+    - Usuários
+  summary: "Lista todos os usu\xE1rios"
+  responses:
+    '200':
+      description: "Lista de usu\xE1rios"
+
+post:
+  tags:
+    - Usuários
+  summary: "Cria um novo usu\xE1rio"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/usuario.yaml'
+  responses:
+    '201':
+      description: "Usu\xE1rio criado com sucesso"
+
+options:
+  tags:
+    - Usuários
+  summary: "Lista m\xE9todos permitidos"
+  responses:
+    '200':
+      description: "M\xE9todos permitidos"
+      headers:
+        Allow:
+          schema:
+            type: string
+            example: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
