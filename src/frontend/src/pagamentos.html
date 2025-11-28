@@ -1,69 +1,262 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pagamentos</title>
-
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
-        header { background: #4f46e5; color: #fff; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
-        header a { color: #fff; text-decoration: none; }
-
-        .page { padding: 20px; }
-        h2 { margin-top: 0; }
-
-        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        table th, table td { border: 1px solid #ccc; padding: 8px; }
-        table th { background: #eee; }
-
-        button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; }
-        button.secondary { background: #e5e7eb; color: #111; }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gerenciar Pagamentos</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
+header { background: #4f46e5; color: #fff; padding: 16px; }
+nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; }
+nav a { margin-right: 12px; text-decoration: none; color: #4f46e5; }
+.container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+h2 { margin-top: 0; }
+.card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; font-weight: bold; }
+input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+table th, table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+table th { background: #eee; }
+button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+button:hover { background: #4338ca; }
+button.secondary { background: #e5e7eb; color: #111; }
+button.secondary:hover { background: #d1d5db; }
+button.danger { background: #ef4444; }
+button.danger:hover { background: #dc2626; }
+.message { padding: 10px; border-radius: 6px; margin-bottom: 15px; }
+.message.success { background: #d1fae5; color: #065f46; }
+.message.error { background: #fee2e2; color: #991b1b; }
+</style>
 </head>
-
-
 <body>
-
 <header>
-    <h1>Pagamentos</h1>
-    <a href="index.html">Voltar ao menu</a>
+<h1>Seu Cantinho - Protótipo</h1>
 </header>
+<nav>
+<a href="espacos.html">Gerenciar Espaços</a>
+<a href="usuarios.html">Gerenciar Usuários</a>
+<a href="reservas.html">Gerenciar Reservas</a>
+<a href="pagamentos.html">Pagamentos</a>
+</nav>
 
-<div id="pagamentos" class="page">
-    <h2>Gerenciar Pagamentos</h2>
+<div class="container">
+<div id="messageBox"></div>
 
-    <div class="card">
-        <h3>Novo Pagamento</h3>
-        <select><option>Reserva</option></select>
-        <input placeholder="Valor" type="number" />
-        <select>
-            <option>Status</option>
-            <option>Aprovado</option>
-            <option>Pendente</option>
-            <option>Cancelado</option>
-        </select>
-        <button>Salvar</button>
-    </div>
-
-    <div class="card">
-        <h3>Lista de Pagamentos</h3>
-        <table>
-            <tr><th>ID</th><th>Reserva</th><th>Valor</th><th>Status</th><th>Ações</th></tr>
-            <tr>
-                <td>p-1</td><td>r-1</td><td>120.00</td><td>Aprovado</td>
-                <td>
-                    <button>Editar</button>
-                    <button class="secondary">Excluir</button>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div class="card">
+<h2 id="formTitle">Registrar Novo Pagamento</h2>
+<form id="pagamentoForm">
+<input type="hidden" id="pagamentoId" />
+<div class="form-group">
+<label for="reserva_id">ID da Reserva*</label>
+<input type="number" id="reserva_id" min="1" required />
+</div>
+<div class="form-group">
+<label for="quantia">Quantia (R$)*</label>
+<input type="number" id="quantia" step="0.01" min="0" required />
+</div>
+<div class="form-group">
+<label for="pago_em">Data e Hora do Pagamento*</label>
+<input type="datetime-local" id="pago_em" required />
+</div>
+<div class="form-group">
+<label for="metodo">Método de Pagamento*</label>
+<select id="metodo" required>
+<option value="">Selecione...</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Cartão de Crédito">Cartão de Crédito</option>
+<option value="Cartão de Débito">Cartão de Débito</option>
+<option value="PIX">PIX</option>
+<option value="Transferência">Transferência</option>
+</select>
+</div>
+<button type="submit" id="submitBtn">Registrar</button>
+<button type="button" class="secondary" onclick="cancelarEdicao()">Cancelar</button>
+</form>
 </div>
 
+<div class="card">
+<h2>Lista de Pagamentos</h2>
+<button onclick="carregarPagamentos()">Atualizar Lista</button>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Reserva ID</th>
+<th>Quantia</th>
+<th>Pago em</th>
+<th>Método</th>
+<th>Ações</th>
+</tr>
+</thead>
+<tbody id="pagamentosTableBody">
+<tr>
+<td colspan="6" style="text-align: center;">Carregando...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+const BROKER_URL = 'http://localhost:4000/pagamentos';
+let editandoId = null;
+
+// Carrega pagamentos ao iniciar a página
+document.addEventListener('DOMContentLoaded', () => {
+  carregarPagamentos();
+  // Define data/hora atual como padrão
+  const agora = new Date();
+  agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+  document.getElementById('pago_em').value = agora.toISOString().slice(0, 16);
+});
+
+// Função para exibir mensagens
+function mostrarMensagem(mensagem, tipo = 'success') {
+  const messageBox = document.getElementById('messageBox');
+  messageBox.innerHTML = `<div class="message ${tipo}">${mensagem}</div>`;
+  setTimeout(() => { messageBox.innerHTML = ''; }, 4000);
+}
+
+// Formata data para exibição
+function formatarDataHora(dataString) {
+  const data = new Date(dataString);
+  return data.toLocaleString('pt-BR');
+}
+
+// Converte datetime-local para formato do backend
+function converterParaFormatoBackend(datetimeLocal) {
+  const data = new Date(datetimeLocal);
+  return data.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+// Converte formato do backend para datetime-local
+function converterParaDatetimeLocal(dataBackend) {
+  const data = new Date(dataBackend);
+  data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
+  return data.toISOString().slice(0, 16);
+}
+
+// Carrega lista de pagamentos
+async function carregarPagamentos() {
+  try {
+    const response = await fetch(BROKER_URL);
+    if (!response.ok) throw new Error('Erro ao carregar pagamentos');
+    
+    const pagamentos = await response.json();
+    const tbody = document.getElementById('pagamentosTableBody');
+    
+    if (pagamentos.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Nenhum pagamento registrado</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = pagamentos.map(pagamento => `
+      <tr>
+        <td>${pagamento.id}</td>
+        <td>${pagamento.reserva_id}</td>
+        <td>R$ ${parseFloat(pagamento.quantia).toFixed(2)}</td>
+        <td>${formatarDataHora(pagamento.pago_em)}</td>
+        <td>${pagamento.metodo}</td>
+        <td>
+          <button onclick="editarPagamento(${pagamento.id})">Editar</button>
+          <button class="danger" onclick="deletarPagamento(${pagamento.id})">Deletar</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (error) {
+    mostrarMensagem('Erro ao carregar pagamentos: ' + error.message, 'error');
+  }
+}
+
+// Submete o formulário
+document.getElementById('pagamentoForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const dados = {
+    reserva_id: parseInt(document.getElementById('reserva_id').value),
+    quantia: parseFloat(document.getElementById('quantia').value),
+    pago_em: converterParaFormatoBackend(document.getElementById('pago_em').value),
+    metodo: document.getElementById('metodo').value
+  };
+  
+  try {
+    let response;
+    if (editandoId) {
+      // Atualizar
+      response = await fetch(`${BROKER_URL}/${editandoId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      mostrarMensagem('Pagamento atualizado com sucesso!');
+    } else {
+      // Criar
+      response = await fetch(BROKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      mostrarMensagem('Pagamento registrado com sucesso!');
+    }
+    
+    if (!response.ok) throw new Error('Erro na operação');
+    
+    cancelarEdicao();
+    carregarPagamentos();
+  } catch (error) {
+    mostrarMensagem('Erro ao salvar pagamento: ' + error.message, 'error');
+  }
+});
+
+// Editar pagamento
+async function editarPagamento(id) {
+  try {
+    const response = await fetch(`${BROKER_URL}/${id}`);
+    if (!response.ok) throw new Error('Erro ao buscar pagamento');
+    
+    const pagamento = await response.json();
+    
+    editandoId = id;
+    document.getElementById('formTitle').textContent = 'Editar Pagamento';
+    document.getElementById('submitBtn').textContent = 'Atualizar';
+    document.getElementById('reserva_id').value = pagamento.reserva_id;
+    document.getElementById('quantia').value = pagamento.quantia;
+    document.getElementById('pago_em').value = converterParaDatetimeLocal(pagamento.pago_em);
+    document.getElementById('metodo').value = pagamento.metodo;
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (error) {
+    mostrarMensagem('Erro ao carregar pagamento: ' + error.message, 'error');
+  }
+}
+
+// Cancelar edição
+function cancelarEdicao() {
+  editandoId = null;
+  document.getElementById('formTitle').textContent = 'Registrar Novo Pagamento';
+  document.getElementById('submitBtn').textContent = 'Registrar';
+  document.getElementById('pagamentoForm').reset();
+  // Redefine data/hora atual
+  const agora = new Date();
+  agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+  document.getElementById('pago_em').value = agora.toISOString().slice(0, 16);
+}
+
+// Deletar pagamento
+async function deletarPagamento(id) {
+  if (!confirm('Tem certeza que deseja deletar este pagamento?')) return;
+  
+  try {
+    const response = await fetch(`${BROKER_URL}/${id}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Erro ao deletar pagamento');
+    
+    mostrarMensagem('Pagamento deletado com sucesso!');
+    carregarPagamentos();
+  } catch (error) {
+    mostrarMensagem('Erro ao deletar pagamento: ' + error.message, 'error');
+  }
+}
+</script>
 </body>
 </html>
-
