@@ -1,101 +1,316 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gerenciar Reservas</title>
-
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
-        header { background: #4f46e5; color: #fff; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
-        header a { color: #fff; text-decoration: none; }
-
-        .page { padding: 20px; }
-        h2 { margin-top: 0; }
-
-        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        table th, table td { border: 1px solid #ccc; padding: 8px; }
-        table th { background: #eee; }
-
-        button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; }
-        button.secondary { background: #e5e7eb; color: #111; }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gerenciar Reservas</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; }
+header { background: #4f46e5; color: #fff; padding: 16px; }
+nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; }
+nav a { margin-right: 12px; text-decoration: none; color: #4f46e5; }
+.container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+h2 { margin-top: 0; }
+.card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; font-weight: bold; }
+input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; overflow-x: auto; display: block; }
+table th, table td { border: 1px solid #ccc; padding: 8px; text-align: left; white-space: nowrap; }
+table th { background: #eee; }
+button { background: #4f46e5; color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+button:hover { background: #4338ca; }
+button.secondary { background: #e5e7eb; color: #111; }
+button.secondary:hover { background: #d1d5db; }
+button.danger { background: #ef4444; }
+button.danger:hover { background: #dc2626; }
+.message { padding: 10px; border-radius: 6px; margin-bottom: 15px; }
+.message.success { background: #d1fae5; color: #065f46; }
+.message.error { background: #fee2e2; color: #991b1b; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+.status-0 { background: #fef3c7; color: #92400e; }
+.status-1 { background: #d1fae5; color: #065f46; }
+.status-2 { background: #fee2e2; color: #991b1b; }
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
 </head>
-
 <body>
-
 <header>
-    <h1>Gerenciar Reservas</h1>
-    <a href="index.html">Voltar ao Menu</a>
+<h1>Seu Cantinho - Protótipo</h1>
 </header>
+<nav>
+<a href="espacos.html">Gerenciar Espaços</a>
+<a href="usuarios.html">Gerenciar Usuários</a>
+<a href="reservas.html">Gerenciar Reservas</a>
+<a href="pagamentos.html">Pagamentos</a>
+</nav>
 
-<div id="reservas" class="page active">
-    <h2>Reservas</h2>
+<div class="container">
+<div id="messageBox"></div>
 
-    <div class="card">
-        <h3>Nova Reserva</h3>
-
-        <label>Local</label>
-        <select>
-            <option>Selecione Local</option>
-        </select>
-
-        <label>Usuário</label>
-        <select>
-            <option>Selecione Usuário</option>
-        </select>
-
-        <label>Data</label>
-        <input type="date" />
-
-        <label>Horário de Início</label>
-        <input type="time" />
-
-        <label>Horário de Fim</label>
-        <input type="time" />
-
-        <button>Salvar</button>
-    </div>
-
-    <div class="card">
-        <h3>Lista de Reservas</h3>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Local</th>
-                <th>Usuário</th>
-                <th>Status Pagamento</th>
-                <th>Data</th>
-                <th>Horário</th>
-                <th>Ações</th>
-            </tr>
-
-            <tr>
-                <td>r-1</td>
-                <td>Sala Azul</td>
-                <td>Maria</td>
-                <td>Pago</td>
-                <td>2025-11-20</td>
-                <td>09:00 - 10:00</td>
-                <td>
-                    <button>Editar</button>
-                    <button class="secondary">Excluir</button>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div class="card">
+<h2 id="formTitle">Criar Nova Reserva</h2>
+<form id="reservaForm">
+<input type="hidden" id="reservaId" />
+<div class="form-row">
+<div class="form-group">
+<label for="espaco_id">ID do Espaço*</label>
+<input type="number" id="espaco_id" min="1" required />
+</div>
+<div class="form-group">
+<label for="cliente_id">ID do Cliente*</label>
+<input type="number" id="cliente_id" min="1" required />
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="data_inicio">Data/Hora de Início*</label>
+<input type="datetime-local" id="data_inicio" required />
+</div>
+<div class="form-group">
+<label for="data_fim">Data/Hora de Término*</label>
+<input type="datetime-local" id="data_fim" required />
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="status">Status da Reserva*</label>
+<select id="status" required>
+<option value="0">Pendente (0)</option>
+<option value="1">Confirmada (1)</option>
+<option value="2">Cancelada (2)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="status_pagamento">Status do Pagamento*</label>
+<select id="status_pagamento" required>
+<option value="0">Pendente (0)</option>
+<option value="1">Pago (1)</option>
+<option value="2">Reembolsado (2)</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="preco_total">Preço Total (R$)*</label>
+<input type="number" id="preco_total" step="0.01" min="0" required />
+</div>
+<button type="submit" id="submitBtn">Criar Reserva</button>
+<button type="button" class="secondary" onclick="cancelarEdicao()">Cancelar</button>
+</form>
 </div>
 
+<div class="card">
+<h2>Lista de Reservas</h2>
+<button onclick="carregarReservas()">Atualizar Lista</button>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Espaço ID</th>
+<th>Cliente ID</th>
+<th>Início</th>
+<th>Término</th>
+<th>Status</th>
+<th>Pgto</th>
+<th>Preço Total</th>
+<th>Criado Em</th>
+<th>Ações</th>
+</tr>
+</thead>
+<tbody id="reservasTableBody">
+<tr>
+<td colspan="10" style="text-align: center;">Carregando...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+const BROKER_URL = 'http://localhost:4000/reservas';
+let editandoId = null;
+
+// Carrega reservas ao iniciar a página
+document.addEventListener('DOMContentLoaded', () => {
+  carregarReservas();
+});
+
+// Função para exibir mensagens
+function mostrarMensagem(mensagem, tipo = 'success') {
+  const messageBox = document.getElementById('messageBox');
+  messageBox.innerHTML = `<div class="message ${tipo}">${mensagem}</div>`;
+  setTimeout(() => { messageBox.innerHTML = ''; }, 4000);
+}
+
+// Formata data para exibição
+function formatarDataHora(dataString) {
+  if (!dataString) return '-';
+  const data = new Date(dataString);
+  return data.toLocaleString('pt-BR');
+}
+
+// Converte datetime-local para formato do backend
+function converterParaFormatoBackend(datetimeLocal) {
+  const data = new Date(datetimeLocal);
+  return data.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+// Converte formato do backend para datetime-local
+function converterParaDatetimeLocal(dataBackend) {
+  const data = new Date(dataBackend);
+  data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
+  return data.toISOString().slice(0, 16);
+}
+
+// Retorna texto do status da reserva
+function getStatusReservaTexto(status) {
+  const statusMap = {
+    0: 'Pendente',
+    1: 'Confirmada',
+    2: 'Cancelada'
+  };
+  return statusMap[status] || 'Desconhecido';
+}
+
+// Retorna texto do status de pagamento
+function getStatusPagamentoTexto(status) {
+  const statusMap = {
+    0: 'Pendente',
+    1: 'Pago',
+    2: 'Reembolsado'
+  };
+  return statusMap[status] || 'Desconhecido';
+}
+
+// Carrega lista de reservas
+async function carregarReservas() {
+  try {
+    const response = await fetch(BROKER_URL);
+    if (!response.ok) throw new Error('Erro ao carregar reservas');
+    
+    const reservas = await response.json();
+    const tbody = document.getElementById('reservasTableBody');
+    
+    if (reservas.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">Nenhuma reserva cadastrada</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = reservas.map(reserva => `
+      <tr>
+        <td>${reserva.id}</td>
+        <td>${reserva.espaco_id}</td>
+        <td>${reserva.cliente_id}</td>
+        <td>${formatarDataHora(reserva.data_inicio)}</td>
+        <td>${formatarDataHora(reserva.data_fim)}</td>
+        <td><span class="status-badge status-${reserva.status}">${getStatusReservaTexto(reserva.status)}</span></td>
+        <td><span class="status-badge status-${reserva.status_pagamento}">${getStatusPagamentoTexto(reserva.status_pagamento)}</span></td>
+        <td>R$ ${parseFloat(reserva.preco_total).toFixed(2)}</td>
+        <td>${formatarDataHora(reserva.criado_em)}</td>
+        <td>
+          <button onclick="editarReserva(${reserva.id})">Editar</button>
+          <button class="danger" onclick="deletarReserva(${reserva.id})">Deletar</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (error) {
+    mostrarMensagem('Erro ao carregar reservas: ' + error.message, 'error');
+  }
+}
+
+// Submete o formulário
+document.getElementById('reservaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const dados = {
+    espaco_id: parseInt(document.getElementById('espaco_id').value),
+    cliente_id: parseInt(document.getElementById('cliente_id').value),
+    data_inicio: converterParaFormatoBackend(document.getElementById('data_inicio').value),
+    data_fim: converterParaFormatoBackend(document.getElementById('data_fim').value),
+    status: parseInt(document.getElementById('status').value),
+    status_pagamento: parseInt(document.getElementById('status_pagamento').value),
+    preco_total: parseFloat(document.getElementById('preco_total').value)
+  };
+  
+  try {
+    let response;
+    if (editandoId) {
+      // Atualizar
+      response = await fetch(`${BROKER_URL}/${editandoId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      mostrarMensagem('Reserva atualizada com sucesso!');
+    } else {
+      // Criar
+      response = await fetch(BROKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+      mostrarMensagem('Reserva criada com sucesso!');
+    }
+    
+    if (!response.ok) throw new Error('Erro na operação');
+    
+    cancelarEdicao();
+    carregarReservas();
+  } catch (error) {
+    mostrarMensagem('Erro ao salvar reserva: ' + error.message, 'error');
+  }
+});
+
+// Editar reserva
+async function editarReserva(id) {
+  try {
+    const response = await fetch(`${BROKER_URL}/${id}`);
+    if (!response.ok) throw new Error('Erro ao buscar reserva');
+    
+    const reserva = await response.json();
+    
+    editandoId = id;
+    document.getElementById('formTitle').textContent = 'Editar Reserva';
+    document.getElementById('submitBtn').textContent = 'Atualizar';
+    document.getElementById('espaco_id').value = reserva.espaco_id;
+    document.getElementById('cliente_id').value = reserva.cliente_id;
+    document.getElementById('data_inicio').value = converterParaDatetimeLocal(reserva.data_inicio);
+    document.getElementById('data_fim').value = converterParaDatetimeLocal(reserva.data_fim);
+    document.getElementById('status').value = reserva.status;
+    document.getElementById('status_pagamento').value = reserva.status_pagamento;
+    document.getElementById('preco_total').value = reserva.preco_total;
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (error) {
+    mostrarMensagem('Erro ao carregar reserva: ' + error.message, 'error');
+  }
+}
+
+// Cancelar edição
+function cancelarEdicao() {
+  editandoId = null;
+  document.getElementById('formTitle').textContent = 'Criar Nova Reserva';
+  document.getElementById('submitBtn').textContent = 'Criar Reserva';
+  document.getElementById('reservaForm').reset();
+}
+
+// Deletar reserva
+async function deletarReserva(id) {
+  if (!confirm('Tem certeza que deseja deletar esta reserva?')) return;
+  
+  try {
+    const response = await fetch(`${BROKER_URL}/${id}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Erro ao deletar reserva');
+    
+    mostrarMensagem('Reserva deletada com sucesso!');
+    carregarReservas();
+  } catch (error) {
+    mostrarMensagem('Erro ao deletar reserva: ' + error.message, 'error');
+  }
+}
+</script>
 </body>
 </html>
-

@@ -106,19 +106,16 @@ button.danger:hover { background: #dc2626; }
 const BROKER_URL = 'http://localhost:4000/espacos';
 let editandoId = null;
 
-// Carrega espaços ao iniciar a página
 document.addEventListener('DOMContentLoaded', () => {
   carregarEspacos();
 });
 
-// Função para exibir mensagens
 function mostrarMensagem(mensagem, tipo = 'success') {
   const messageBox = document.getElementById('messageBox');
   messageBox.innerHTML = `<div class="message ${tipo}">${mensagem}</div>`;
   setTimeout(() => { messageBox.innerHTML = ''; }, 4000);
 }
 
-// Carrega lista de espaços
 async function carregarEspacos() {
   try {
     const response = await fetch(BROKER_URL);
@@ -153,7 +150,6 @@ async function carregarEspacos() {
   }
 }
 
-// Submete o formulário
 document.getElementById('espacoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -168,7 +164,6 @@ document.getElementById('espacoForm').addEventListener('submit', async (e) => {
   try {
     let response;
     if (editandoId) {
-      // Atualizar
       response = await fetch(`${BROKER_URL}/${editandoId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -176,7 +171,6 @@ document.getElementById('espacoForm').addEventListener('submit', async (e) => {
       });
       mostrarMensagem('Espaço atualizado com sucesso!');
     } else {
-      // Criar
       response = await fetch(BROKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -194,7 +188,6 @@ document.getElementById('espacoForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Editar espaço
 async function editarEspaco(id) {
   try {
     const response = await fetch(`${BROKER_URL}/${id}`);
@@ -217,7 +210,6 @@ async function editarEspaco(id) {
   }
 }
 
-// Cancelar edição
 function cancelarEdicao() {
   editandoId = null;
   document.getElementById('formTitle').textContent = 'Cadastrar Novo Espaço';
@@ -225,7 +217,6 @@ function cancelarEdicao() {
   document.getElementById('espacoForm').reset();
 }
 
-// Deletar espaço
 async function deletarEspaco(id) {
   if (!confirm('Tem certeza que deseja deletar este espaço?')) return;
   

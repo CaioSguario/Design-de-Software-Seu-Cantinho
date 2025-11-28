@@ -102,42 +102,35 @@ button.danger:hover { background: #dc2626; }
 const BROKER_URL = 'http://localhost:4000/pagamentos';
 let editandoId = null;
 
-// Carrega pagamentos ao iniciar a página
 document.addEventListener('DOMContentLoaded', () => {
   carregarPagamentos();
-  // Define data/hora atual como padrão
   const agora = new Date();
   agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
   document.getElementById('pago_em').value = agora.toISOString().slice(0, 16);
 });
 
-// Função para exibir mensagens
 function mostrarMensagem(mensagem, tipo = 'success') {
   const messageBox = document.getElementById('messageBox');
   messageBox.innerHTML = `<div class="message ${tipo}">${mensagem}</div>`;
   setTimeout(() => { messageBox.innerHTML = ''; }, 4000);
 }
 
-// Formata data para exibição
 function formatarDataHora(dataString) {
   const data = new Date(dataString);
   return data.toLocaleString('pt-BR');
 }
 
-// Converte datetime-local para formato do backend
 function converterParaFormatoBackend(datetimeLocal) {
   const data = new Date(datetimeLocal);
   return data.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-// Converte formato do backend para datetime-local
 function converterParaDatetimeLocal(dataBackend) {
   const data = new Date(dataBackend);
   data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
   return data.toISOString().slice(0, 16);
 }
 
-// Carrega lista de pagamentos
 async function carregarPagamentos() {
   try {
     const response = await fetch(BROKER_URL);
@@ -169,7 +162,6 @@ async function carregarPagamentos() {
   }
 }
 
-// Submete o formulário
 document.getElementById('pagamentoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -183,7 +175,6 @@ document.getElementById('pagamentoForm').addEventListener('submit', async (e) =>
   try {
     let response;
     if (editandoId) {
-      // Atualizar
       response = await fetch(`${BROKER_URL}/${editandoId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -191,7 +182,6 @@ document.getElementById('pagamentoForm').addEventListener('submit', async (e) =>
       });
       mostrarMensagem('Pagamento atualizado com sucesso!');
     } else {
-      // Criar
       response = await fetch(BROKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -209,7 +199,6 @@ document.getElementById('pagamentoForm').addEventListener('submit', async (e) =>
   }
 });
 
-// Editar pagamento
 async function editarPagamento(id) {
   try {
     const response = await fetch(`${BROKER_URL}/${id}`);
@@ -231,19 +220,16 @@ async function editarPagamento(id) {
   }
 }
 
-// Cancelar edição
 function cancelarEdicao() {
   editandoId = null;
   document.getElementById('formTitle').textContent = 'Registrar Novo Pagamento';
   document.getElementById('submitBtn').textContent = 'Registrar';
   document.getElementById('pagamentoForm').reset();
-  // Redefine data/hora atual
   const agora = new Date();
   agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
   document.getElementById('pago_em').value = agora.toISOString().slice(0, 16);
 }
 
-// Deletar pagamento
 async function deletarPagamento(id) {
   if (!confirm('Tem certeza que deseja deletar este pagamento?')) return;
   
