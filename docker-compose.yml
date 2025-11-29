@@ -7,7 +7,7 @@ services:
     environment:
       SWAGGER_JSON: /openapi/openapi.yaml
     volumes:
-      - ./src/openapi:/openapi:ro
+      - ./src/openapi:/openapi:ro,z
     restart: unless-stopped
 
   broker:
@@ -21,8 +21,8 @@ services:
     build: ./src/backend/espacos_svc
     container_name: espacos_svc
     volumes:
-      - ./src/backend/utils:/app/utils
-      - ./src/openapi:/openapi:ro
+      - ./src/backend/utils:/app/utils:z
+      - ./src/openapi:/openapi:ro,z
     depends_on:
       - broker
     ports:
@@ -35,8 +35,8 @@ services:
     build: ./src/backend/usuarios_svc
     container_name: usuarios_svc
     volumes:
-      - ./src/backend/utils:/app/utils
-      - ./src/openapi:/openapi:ro
+      - ./src/backend/utils:/app/utils:z
+      - ./src/openapi:/openapi:ro,z
     depends_on:
       - broker
     ports:
@@ -49,8 +49,8 @@ services:
     build: ./src/backend/reservas_svc
     container_name: reservas_svc
     volumes:
-      - ./src/backend/utils:/app/utils
-      - ./src/openapi:/openapi:ro
+      - ./src/backend/utils:/app/utils:z
+      - ./src/openapi:/openapi:ro,z
     depends_on:
       - broker
     ports:
@@ -63,8 +63,8 @@ services:
     build: ./src/backend/pagamentos_svc
     container_name: pagamentos_svc
     volumes:
-      - ./src/backend/utils:/app/utils
-      - ./src/openapi:/openapi:ro
+      - ./src/backend/utils:/app/utils:z
+      - ./src/openapi:/openapi:ro,z
     depends_on:
       - broker
     ports:
