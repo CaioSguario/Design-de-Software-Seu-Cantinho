@@ -1,4 +1,4 @@
-# Sistema "Meu Cantinho"
+# Sistema "Seu Cantinho"
 ## Trabalho final da disciplina de Design de Software - UFPR.
 
 ### Especificação
