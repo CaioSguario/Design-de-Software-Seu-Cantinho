@@ -155,14 +155,14 @@ function formatarDataHora(dataString) {
 // Converte datetime-local para formato do backend
 function converterParaFormatoBackend(datetimeLocal) {
   const data = new Date(datetimeLocal);
-  return data.toISOString().slice(0, 19).replace('T', ' ');
+  return datetimeLocal.replace("T", " ");
 }
 
 // Converte formato do backend para datetime-local
 function converterParaDatetimeLocal(dataBackend) {
   const data = new Date(dataBackend);
   data.setMinutes(data.getMinutes() - data.getTimezoneOffset());
-  return data.toISOString().slice(0, 16);
+  return data.toISOString().slice(0, 16);  
 }
 
 // Retorna texto do status da reserva

@@ -122,7 +122,7 @@ function formatarDataHora(dataString) {
 
 function converterParaFormatoBackend(datetimeLocal) {
   const data = new Date(datetimeLocal);
-  return data.toISOString().slice(0, 19).replace('T', ' ');
+  return datetimeLocal.replace("T", " ");
 }
 
 function converterParaDatetimeLocal(dataBackend) {
