@@ -26,8 +26,7 @@ function save_reservas(consultas) {
 function validate_reserva(res, espaco_id, self_id, inicio, fim, reservas) {
 
   if (inicio >= fim) {
-    res.status(400).json({ erro: "Intervalo de datas inválido" });
-    return false;
+    return { ok: false, erro: "Intervalo de datas inválido" };
   }
 
   // Checa se existe concomitancia
@@ -39,10 +38,9 @@ function validate_reserva(res, espaco_id, self_id, inicio, fim, reservas) {
   );
 
   if (conflito) {
-    res.status(409).json({ erro: "Conflito: espaço já reservado neste horário" });
-    return false;
+    return { ok: false, erro: "Conflito: espaço já reservado neste horário" };
   }
-  return true;
+  return { ok: true };
 }
 
 app.get('/reservas/', (req, res) => {
@@ -65,12 +63,39 @@ app.post('/reservas', async (req, res) => {
   const fim = new Date(data_fim).getTime();
 
   try {
-    const resposta = await axios.get(`http://espacos_svc:3001/espacos/${espaco_id}`);
+    try {
+      const respostaEspaco = await axios.get(`http://espacos_svc:3001/espacos/${espaco_id}`);
+
+      if (respostaEspaco.status === 404) {
+        throw new Error("ESPACO_NAO_ENCONTRADO");
+      }
+
+      if (!respostaEspaco.data.ativo) {
+        throw new Error("ESPACO_INATIVO");
+      }
+    } catch (error) {
+      if (error.response?.status === 404) 
+        return res.status(400).json({ erro: "Espaço não existe" });
+      
+      if (error.message === "ESPACO_INATIVO") 
+        return res.status(400).json({ erro: "Espaço está inativo" });
+
+      return res.status(400).json({ erro: "Erro ao validar espaço" });
+    }
+
+    try {
+      const respostaCliente = await axios.get(`http://usuarios_svc:3003/usuarios/${cliente_id}`);
+      if (respostaCliente.data.cargo != 'Cliente') throw Error();
+    } catch (error) {
+      return res.status(400).json({ erro: 'Cliente inválido' });
+    }
 
     const reservas = load_reservas();
 
     const valid = validate_reserva(res, espaco_id, null, inicio, fim, reservas);
-    if(!valid) return;
+    if (!valid.ok) {
+      return res.status(400).json({ erro: valid.erro });
+    }
 
     const nova = { id: get_next_id(db_path), espaco_id, cliente_id, data_inicio, data_fim, status, status_pagamento, preco_total, criado_em: Date.now() };
 
@@ -78,9 +103,9 @@ app.post('/reservas', async (req, res) => {
     save_reservas(reservas);
 
     res.status(201).json(nova);
-  } catch(error) {
-    console.error("Erro ao buscar espaço:", error.message);
-    res.status(400).json({ erro: 'Espaço inválido' });
+  } catch (error) {
+    console.error("Erro interno:", error.message);
+    return res.status(500).json({ erro: "Erro interno no servidor" });
   }
 });
 
@@ -92,12 +117,14 @@ app.put('/reservas/:id', (req, res) => {
 
   const { espaco_id, data_inicio, data_fim } = req.body;
   const id = Number(req.params.id);
-  
+
   const inicio = new Date(data_inicio).getTime();
   const fim = new Date(data_fim).getTime();
 
-  const valid = validate_reserva(res, espaco_id, id, inicio, fim, reservas);
-  if(!valid) return;
+  const valid = validate_reserva(res, espaco_id, null, inicio, fim, reservas);
+  if (!valid.ok) {
+    return res.status(400).json({ erro: valid.erro });
+  }
 
   reservas[index] = { id: Number(req.params.id), ...req.body };
   save_reservas(reservas);
@@ -116,8 +143,10 @@ app.patch('/reservas/:id', (req, res) => {
   const inicio = new Date(data_inicio).getTime();
   const fim = new Date(data_fim).getTime();
 
-  const valid = validate_reserva(res, espaco_id, id, inicio, fim, reservas);
-  if(!valid) return;
+  const valid = validate_reserva(res, espaco_id, null, inicio, fim, reservas);
+  if (!valid.ok) {
+    return res.status(400).json({ erro: valid.erro });
+  }
 
   Object.assign(reserva, req.body);
   save_reservas(reservas);
