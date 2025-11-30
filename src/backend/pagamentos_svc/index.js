@@ -15,15 +15,15 @@ const db_dir = path.join(__dirname, 'db');
 const RESERVAS_URL = process.env.RESERVAS_URL || "http://reservas_svc:3000";
 
 async function getReservas() {
-    const resp = await axios.get(`${RESERVAS_URL}/reservas`);
-    return resp.data;
+  const resp = await axios.get(`${RESERVAS_URL}/reservas`);
+  return resp.data;
 }
 
 function load_pagamentos() {
   check_bd(db_dir, db_path);
   const data = fs.readFileSync(db_path);
   return JSON.parse(data);
-} 
+}
 
 function save_pagamentos(espaco) {
   check_bd(db_dir, db_path);
@@ -43,21 +43,25 @@ app.get('/pagamentos/:id', (req, res) => {
   res.json(pagamento);
 });
 
-app.post('/pagamentos', async (req, res) =>{
-  const { reserva_id, quantia, pago_em, metodo} = req.body;
+app.post('/pagamentos', async (req, res) => {
+  const { reserva_id, quantia, pago_em, metodo } = req.body;
+  try {
     try {
       const resposta = await axios.get(`http://reservas_svc:3000/reservas/${reserva_id}`);
-      const reserva = resposta.data;
-    
-      const pagamentos = load_pagamentos();
-      const novo = {id : get_next_id(db_path), reserva_id, quantia, pago_em, metodo};
-      pagamentos.push(novo);
-      save_pagamentos(pagamentos);
-  
-      res.status(201).json(novo);
-    } catch {
-      res.status(400).json({ erro: 'Dados inválidos' });
+    } catch (error) {
+      return res.status(400).json({ erro: 'Reserva inválida' });      
     }
+
+    const pagamentos = load_pagamentos();
+    const novo = { id: get_next_id(db_path), reserva_id, quantia, pago_em, metodo };
+    pagamentos.push(novo);
+    save_pagamentos(pagamentos);
+
+    res.status(201).json(novo);
+  } catch {
+    console.error("Erro interno:", error.message);
+    return res.status(500).json({ erro: "Erro interno no servidor" });
+  }
 });
 
 

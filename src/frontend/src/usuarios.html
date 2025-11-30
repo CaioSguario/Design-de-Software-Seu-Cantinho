@@ -14,7 +14,7 @@ h2 { margin-top: 0; }
 .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
 .form-group { margin-bottom: 15px; }
 label { display: block; margin-bottom: 5px; font-weight: bold; }
-input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+input, select { width: 100%; padding: 10px; border: 1px solid #ddd; background-color: #fff; border-radius: 6px; box-sizing: border-box; }
 table { width: 100%; border-collapse: collapse; margin-top: 15px; overflow-x: auto; display: block; }
 table th, table td { border: 1px solid #ccc; padding: 8px; text-align: left; white-space: nowrap; }
 table th { background: #eee; }
@@ -230,7 +230,11 @@ document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
       mostrarMensagem('Usuário cadastrado com sucesso!');
     }
     
-    if (!response.ok) throw new Error('Erro na operação');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => null);
+      const mensagem = errData?.erro || "Erro na operação";
+      throw new Error(mensagem);
+    }
     
     cancelarEdicao();
     carregarUsuarios();
